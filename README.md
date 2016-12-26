@@ -1,6 +1,6 @@
 # krpano移动端解决方案
 
-![example](example.jpeg =300)
+![example](example.jpeg)
 
 ### 功能：
 * 右侧快捷操作入口：
