@@ -47,6 +47,8 @@
 
 另外`<scene ...>`中如果有`thumburl`和`title`这两属性，则会被列到下方的场景列表中去。
 
+
+
 ### 入口箭头：
 ```
 <hotspot style="hotspot"

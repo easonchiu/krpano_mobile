@@ -36,11 +36,34 @@
 			xml.view.fov === null,
 			set(xml.view.fov, 95);
 		);
+
+		<!--不可操控-->
+		set(control.usercontrol, off);
+
+		<!--将场景中的功能菜单都隐藏-->
+		set(layer[sandmap_switch].alpha, 0);
+		set(layer[vr].alpha, 0);
+		set(layer[bg_sound].alpha, 0);
+		set(layer[gravity].alpha, 0);
+		set(layer[tab_switch].alpha, 0);
+		for (
+			set(i, 0), i LT hotspot.count, inc(i),
+			set(hotspot[get(i)].alpha, 0);
+		);
+
 		tween(view.pannini, 0.0, 2, easeOutQuad);
 		tween(view.fisheye, 0.35, 2, easeOutQuad);
 		tween(view.hlookat, get(xml.view.hlookat), 2, easeOutQuad);
 		tween(view.vlookat, get(xml.view.vlookat), 2, easeOutQuad);
 		tween(view.fov, get(xml.view.fov), 2, easeOutQuad,
+			<!--功能菜单都显示出来-->
+			tween(layer[sandmap_switch].alpha, 1);
+			tween(layer[vr].alpha, 1);
+			tween(layer[bg_sound].alpha, 1);
+			tween(layer[gravity].alpha, 1);
+			tween(layer[tab_switch].alpha, 0.75);
+
+			<!--用户可操控-->
 			set(control.usercontrol, all);
 		);
 	</action>
@@ -175,7 +198,7 @@
 	</action>
 
 	<!--切换场景loading-->
-	<events name="on_new_scene" keep="true" onxmlcomplete="startloading();" onloadcomplete="endloading();" />
+	<events name="on_new_scene" keep="true" onxmlcomplete="startloading();" onnewscene="endloading();" />
 	<action name="startloading">
 		show_tips('加载中');
 		if (
@@ -202,7 +225,6 @@
 		if (
 			firstscene,
 			set(firstscene, false);
-			set(control.usercontrol, off);
 			wait(1);
 			init_view();
 		);
@@ -216,6 +238,11 @@
 				titledelay2,
 				3,
 				tween(layer[scene_name_tips].alpha, 0, 0.3, easeOutQuad);
+			);
+			switch_tap(false);
+			for (
+				set(i, 0), i LT hotspot.count, inc(i),
+				tween(hotspot[get(i)].alpha, 1);
 			);
 		);
 	</action>
@@ -416,12 +443,11 @@
 		width="100%"
 		height="120"
 		x="0"
-		y="80"
-		bgalpha="0.2"
+		y="-120"
+		bgalpha="0.3"
 		align="bottom"
 		bgcolor="0x000000"
 		type="container"
-		maskchildren="false"
 		zorder="9" />
 	<style name="scroll_area"
 		url="plugins/scrollarea.js"
@@ -451,6 +477,30 @@
 	<layer name="tab_box" style="tab_box">
 		<layer name="scroll_area" style="scroll_area"></layer>
 	</layer>
+
+	<style name="tab_switch"
+		url="images/switch-tab.png"
+		keep="true"
+		width="50"
+		height="50"
+		crop="0|15|100|100"
+		alpha="0"
+		x="0"
+		y="0"
+		align="centerbottom"
+		onclick="switch_tap()"
+		zorder="8" />
+	<layer name="tab_switch" style="tab_switch" />
+	<action name="switch_tap">
+		if (
+			%1 === false,
+			tween(layer[tab_switch].y, 0, 0.3, easeOutQuad);
+			tween(layer[tab_box].y, -120, 0.3, easeOutQuad);,
+			tween(layer[tab_switch].y, -50, 0.3, easeOutQuad);
+			tween(layer[tab_box].y, 0, 0.3, easeOutQuad);
+		);
+	</action>
+	<events name="tab_event" keep="true" onmousedown="switch_tap(false)" />
 
 	<!--跳转场景-->
 	<action name="transform_scene">
@@ -493,6 +543,7 @@
 		width="prop"
 		height="60"
 		zoom="false"
+		alpha="0"
 		onloaded="hotspot_init(128, 128, 60)"
 		onclick="transform_scene()" />
 
