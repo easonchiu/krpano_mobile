@@ -29,12 +29,12 @@
 	y="10"
 	entry="keting" />
 ```
-说明：
+说明：  
 `gravity`：是否启用重力感应  
 `vr`：是否启用vr功能  
 `bgsound`：背景音乐的路径  
 `bgsoundplay`：背景音乐是否自动播放  
-`x`、`y`：距离右上角的x轴与y轴位置  
+`x`、`y`：距离右上角的x轴与y轴位置，这两个值默认为10  
 `entry`：入口场景  
 以上参数中`gravity`、`vr`、`bgsound`为`false`时，该功能按钮不显示  
 
@@ -46,7 +46,7 @@
 	width="200"
 	height="231" />
 ```
-说明：
+说明：  
 `visible`：是否一直保持显示状态，建议`false`  
 `bg`：沙盘的背景图
 `width`：沙盘的宽度  
