@@ -80,8 +80,8 @@
 		if(current_scene === null, set(current_scene, get(scene[0].name)));
 		loadscene(get(current_scene), null, MERGE, COLORBLEND(1, 0xffffff));
 		<!--配置-->
-		set(x, 10);
-		set(y, 10);
+		set(x, get(config[config].x));
+		set(y, get(config[config].y));
 		if (
 			sandmap[sandmap].bg
 			AND sandmap[sandmap].bg != ''
