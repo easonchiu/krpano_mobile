@@ -42,6 +42,7 @@
 
 		<!--将场景中的功能菜单都隐藏-->
 		set(layer[sandmap_switch].alpha, 0);
+		set(layer[sandmapbox].alpha, 0);
 		set(layer[vr].alpha, 0);
 		set(layer[bg_sound].alpha, 0);
 		set(layer[gravity].alpha, 0);
@@ -58,6 +59,10 @@
 		tween(view.fov, get(xml.view.fov), 2, easeOutQuad,
 			<!--功能菜单都显示出来-->
 			tween(layer[sandmap_switch].alpha, 1);
+			if (
+				sandmap[sandmap].visible === true,
+				tween(layer[sandmapbox].alpha, 1);
+			);
 			tween(layer[vr].alpha, 1);
 			tween(layer[bg_sound].alpha, 1);
 			tween(layer[gravity].alpha, 1);
@@ -125,7 +130,6 @@
 			for (
 				set(i, 0), i LT scene.count, inc(i),
 				add_sandmap_point(scene[get(i)].pointx, scene[get(i)].pointy, scene[get(i)].name);
-
 			);
 			set(layer[sandmap_switch].visible, true);
 			set(layer[sandmap_switch].x, get(x));
@@ -326,7 +330,7 @@
 		zorder="2" />
 
 	<!--沙盘-->
-	<layer name="sandmapbox" type="container" visible="false" keep="true" align="righttop" y="10" x="60" zorder="9">
+	<layer name="sandmapbox" type="container" visible="false" keep="true" align="righttop" y="10" x="60" zorder="8">
 		<layer name="sandmap" keep="true" handcursor="false" zorder="1" />
 		<layer name="sandmap_range" style="sandmap_range" />
 	</layer>
@@ -339,8 +343,7 @@
 			t,
 			set(crop, '0|0|100|100');
 			set(plugin[gyro].enabled, true);
-			show_tips('重力感应开启', 1.5);
-			,
+			show_tips('重力感应开启', 1.5);,
 			set(crop, '0|100|100|100');
 			set(plugin[gyro].enabled, false);
 			show_tips('重力感应关闭', 1.5);
@@ -415,11 +418,11 @@
 		if (
 			t,
 			set(crop, '0|0|100|100');
-			set(layer[sandmapbox].enabled, 'false');
+			set(layer[sandmapbox].enabled, false);
 			tween(layer[sandmapbox].alpha, 0 ,0.3);
 			tween(layer[sandmapbox].x, 0 , 0.3, 'easeInBack');,
 			set(crop, '0|100|100|100');
-			set(layer[sandmapbox].enabled, 'true');
+			set(layer[sandmapbox].enabled, true);
 			tween(layer[sandmapbox].alpha, 1 ,0.3);
 			tween(layer[sandmapbox].x, 65 , 0.3, 'easeOutBack');
 		);
@@ -517,8 +520,7 @@
 						sandmap_point_name == current_sandmap_point_name,
 						set(layer[get(sandmap_point_name)].crop, '0|40|40|40');
 						set(layer[sandmap_range].x, calc(layer[get(sandmap_point_name)].x + 10));
-						set(layer[sandmap_range].y, calc(layer[get(sandmap_point_name)].y + 10));
-						,
+						set(layer[sandmap_range].y, calc(layer[get(sandmap_point_name)].y + 10));,
 						set(layer[get(sandmap_point_name)].crop, '0|0|40|40');
 					);
 				);
