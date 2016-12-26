@@ -1,0 +1,17 @@
+{
+  "name": "krpano",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run server",
+    "build": "rm -rf ./dist && webpack --bail --progress --profile",
+    "watch": "webpack --progress --colors --watch",
+    "server": "webpack-dev-server --history-api-fallback --inline --progress"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^1.14.0"
+  }
+}

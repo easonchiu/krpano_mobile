@@ -1,0 +1,81 @@
+﻿<krpano>
+	
+	<!--基础功能-->
+	<include name="include" url="../../../../krpano/config.xml" />
+
+	<config name="config"
+		gravity="true"
+		vr="true"
+		bgsound="krpano/sound.mp3"
+		bgsoundplay="false"
+		entry="keting" />
+
+	<sandmap name="sandmap"
+		visible="false"
+		bg="src/sandmap.png"
+		width="200"
+		height="231" />
+	
+
+	<scene name="keting" title="客厅" pointx="45" pointy="140" direction="30" thumburl="keting/thumb.jpg">
+		<hotspot style="hotspot"
+			direction="right"
+			ath="12.878134636095"
+			atv="10.3502532533291"
+			link="woshi"
+			title="卧室" />
+
+		<hotspot style="hotspot"
+			direction="left"
+			ath="11.878134636095"
+			atv="0.3502532533291"
+			link="shufang"
+			title="书房" />
+
+		<view hlookat="160" fovmin="60" fov="95" fovmax="120" />
+		<preview url="keting/preview.jpg" />
+		<image>
+			<cube url="keting/mobile_%s.jpg" />
+		</image>
+	</scene>
+
+
+	<scene name="woshi" title="卧室" pointx="150" pointy="170" direction="90" thumburl="woshi/thumb.jpg">
+		<hotspot style="hotspot"
+			direction="ahead"
+			ath="249.11837039983"
+			atv="15.756736275496"
+			link="shufang"
+			title="书房" />
+
+		<view hlookat="20" fovmin="60" fov="95" fovmax="120" />
+		<preview url="woshi/preview.jpg" />
+		<image>
+			<cube url="woshi/mobile_%s.jpg" />
+		</image>
+	</scene>
+
+
+	<scene name="shufang" title="书房" pointx="155" pointy="40" direction="15" thumburl="shufang/thumb.jpg">
+		<hotspot style="hotspot"
+			direction="left"
+			ath="198.16314809776"
+			atv="21.961074334392"
+			link="keting"
+			title="客厅" />
+		<hotspot style="hotspot"
+			direction="ahead"
+			ath="200.16314809776"
+			atv="11.961074334392"
+			link="woshi"
+			title="卧室" />
+
+		<view hlookat="20" fovmin="60" fov="95" fovmax="120" />
+		<preview url="shufang/preview.jpg" />
+		<image>
+			<cube url="shufang/mobile_%s.jpg" />
+		</image>
+	</scene>
+
+
+</krpano>

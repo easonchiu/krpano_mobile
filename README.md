@@ -1,0 +1,1 @@
+# krpano_mobile

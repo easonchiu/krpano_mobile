@@ -1,0 +1,559 @@
+<krpano>
+	
+	<!--vr插件-->
+	<include url="plugins/webvr.xml" />
+
+	<!--重力感应插件-->
+	<plugin name="gyro" devices="html5"
+        url="plugins/gyro.js"
+        enabled="true"
+        preload="true"
+        keep="true" />
+
+	<!--背景音乐-->
+	<plugin name="soundinterface"
+        url="plugins/soundinterface.js"
+        preload="true"
+        keep="true" />
+
+    <!--自动旋转-->
+    <autorotate enabled="true"
+		waittime="5.0"
+		speed="5.0"
+		horizon="0.0" />
+
+    <!--初始化-->
+    <action name="init_view">
+    	if (
+			xml.view.vlookat === null,
+			set(xml.view.vlookat, 0);
+		);
+		if (
+			xml.view.hlookat === null,
+			set(xml.view.hlookat, 0);
+		);
+		if (
+			xml.view.fov === null,
+			set(xml.view.fov, 95);
+		);
+		tween(view.pannini, 0.0, 2, easeOutQuad);
+		tween(view.fisheye, 0.35, 2, easeOutQuad);
+		tween(view.hlookat, get(xml.view.hlookat), 2, easeOutQuad);
+		tween(view.vlookat, get(xml.view.vlookat), 2, easeOutQuad);
+		tween(view.fov, get(xml.view.fov), 2, easeOutQuad,
+			set(control.usercontrol, all);
+		);
+	</action>
+
+	<action name="startup" autorun="onstart">
+		<!--加载首个场景-->
+		set(firstscene, true);
+		if(config[config].entry AND config[config].entry !== '', set(current_scene, get(config[config].entry)));
+		if(current_scene === null, set(current_scene, get(scene[0].name)));
+		loadscene(get(current_scene), null, MERGE, COLORBLEND(1, 0xffffff));
+		<!--配置-->
+		set(x, 10);
+		set(y, 10);
+		if (
+			sandmap[sandmap].bg
+			AND sandmap[sandmap].bg != ''
+			AND sandmap[sandmap].width
+			AND sandmap[sandmap].height,
+			def(has_sandmap, boolean, true);
+		);
+		if (
+			config[config].gravity,
+			set(layer[gravity].visible, true);
+			set(layer[gravity].x, get(x));
+			set(layer[gravity].y, get(y));
+			layer[gravity].changeorigin();
+			set(y, calc(y + layer[gravity].height + 10));,
+			set(plugin[gyro].enabled, false);
+		);
+		if (
+			config[config].vr,
+			set(layer[vr].visible, true);
+			set(layer[vr].x, get(x));
+			set(layer[vr].y, get(y));
+			set(y, calc(y + layer[vr].height + 10));
+		);
+		if (
+			config[config].bgsound AND config[config].bgsound != '',
+			set(layer[bg_sound].visible, true);
+			set(layer[bg_sound].x, get(x));
+			set(layer[bg_sound].y, get(y));
+			set(y, calc(y + layer[bg_sound].height + 10));
+			if (
+				config[config].bgsoundplay !== false,
+				playsound(bgsnd, get(config[config].bgsound), 0);
+				def(loadedsound, boolean, true);,
+				set(layer[bg_sound].crop, '0|0|100|100');
+				set(layer[bg_sound].toggle, false);
+			);
+		);
+		if (
+			has_sandmap,
+			set(layer[sandmapbox].visible, true);
+			set(layer[sandmap].url, get(sandmap[sandmap].bg));
+			set(layer[sandmap].width, get(sandmap[sandmap].width));
+			set(layer[sandmapbox].width, get(sandmap[sandmap].width));
+			set(layer[sandmap].height, get(sandmap[sandmap].height));
+			set(layer[sandmapbox].height, get(sandmap[sandmap].height));
+			for (
+				set(i, 0), i LT scene.count, inc(i),
+				add_sandmap_point(scene[get(i)].pointx, scene[get(i)].pointy, scene[get(i)].name);
+
+			);
+			set(layer[sandmap_switch].visible, true);
+			set(layer[sandmap_switch].x, get(x));
+			set(layer[sandmap_switch].y, get(y));
+			if (
+				sandmap[sandmap].visible == false,
+				set(layer[sandmapbox].x, 0);
+				set(layer[sandmapbox].alpha, 0);
+				set(layer[sandmapbox].enabled, false);
+				set(layer[sandmap_switch].crop, '0|0|100|100');
+				set(layer[sandmap_switch].toggle, false);
+			);
+		);
+		for (
+			set(i, 0), i LT scene.count, inc(i),
+			if (scene[get(i)].thumburl !== null,
+				txtadd(thumb_item, 'thumb_item_', get(scene[get(i)].name));
+				addlayer(get(thumb_item));
+				set(layer[get(thumb_item)].parent, layer[scroll_area]);
+				set(layer[get(thumb_item)].x, calc(i * 120 + 50));
+				layer[get(thumb_item)].loadstyle(scroll_item);
+				txtadd(thumb_pic, 'thumb_item_pic_', get(scene[get(i)].name));
+				addlayer(get(thumb_pic));
+				set(layer[get(thumb_pic)].parent, get(thumb_item));
+				set(layer[get(thumb_pic)].keep, true);
+				set(layer[get(thumb_pic)].url, get(scene[get(i)].thumburl));
+				set(layer[get(thumb_pic)].link, get(scene[get(i)].name));
+				set(layer[get(thumb_pic)].width, 100%);
+				set(layer[get(thumb_pic)].height, 100%);
+				set(layer[get(thumb_pic)].onclick, transform_scene);
+				txtadd(thumb_title, 'thumb_item_title_', get(scene[get(i)].name));
+				addlayer(get(thumb_title));
+				set(layer[get(thumb_title)].parent, get(thumb_item));
+				set(layer[get(thumb_title)].html, get(scene[get(i)].title));
+				layer[get(thumb_title)].loadstyle(scroll_item_title);
+				if (
+					scene[get(i)].name == current_scene,
+					set(layer[get(thumb_item)].bgborder, '3 0xF6B64C');
+				);
+			);
+		);
+		set(layer[scroll_area].width, calc(scene.count * 120 - 20 + 100));
+	</action>
+
+	<!--提示-->
+	<layer name="tips"
+		keep="true"
+		url="textfield.swf"
+		backgroundcolor="0x000000"
+	    backgroundalpha="0.6"
+	    roundedge="3"
+	    enabled="false"
+	    alpha="0"
+	    css="color:#ffffff;font-size:16px;padding:6px 12px;"
+	    html=""
+	    align="center"
+	    zorder="9" />
+	<action name="show_tips">
+		stopdelayedcall(center_tips_delay);
+		set(layer[tips].html, %1);
+		set(layer[tips].alpha, 0);
+		tween(layer[tips].alpha, 1, 0.3, easeOutQuad);
+		if (
+			%2 != null,
+			delayedcall(center_tips_delay, %2, hide_tips());
+		);
+	</action>
+	<action name="hide_tips">
+		tween(layer[tips].alpha, 0, 0.3, easeOutQuad);
+	</action>
+
+	<!--切换场景loading-->
+	<events name="on_new_scene" keep="true" onxmlcomplete="startloading();" onloadcomplete="endloading();" />
+	<action name="startloading">
+		show_tips('加载中');
+		if (
+			sandmap[sandmap].visible !== true,
+			set(toggle, true);
+			set(layer[sandmap_switch].toggle, false);
+			set(layer[sandmap_switch].crop, '0|0|100|100');
+			toggle_sandmap();
+		);
+		set(layer[scene_name_tips].alpha, 0);
+		stopdelayedcall(titledelay);
+		stopdelayedcall(titledelay2);
+		if (
+			firstscene,
+	    	set(view.pannini, 0.1);
+	    	set(view.fisheye, 0.0);
+	    	set(view.distortion, 1.3);
+	    	set(view.fov, 150);
+	    	set(view.vlookat, 90);
+	    	set(view.hlookat, calc(xml.view.hlookat + 180));
+    	);
+	</action>
+	<action name="endloading">
+		if (
+			firstscene,
+			set(firstscene, false);
+			set(control.usercontrol, off);
+			wait(1);
+			init_view();
+		);
+		hide_tips();
+		set(layer[scene_name_tips].html, get(scene[get(current_scene)].title));
+		delayedcall(
+			titledelay,
+			1,
+			tween(layer[scene_name_tips].alpha, 1, 0.3, easeOutQuad);
+			delayedcall(
+				titledelay2,
+				3,
+				tween(layer[scene_name_tips].alpha, 0, 0.3, easeOutQuad);
+			);
+		);
+	</action>
+
+	<layer name="scene_name_tips"
+		keep="true"
+		url="textfield.swf"
+		html=""
+		enabled="false"
+		align="topcenter"
+		backgroundcolor="0xffffff"
+		backgroundalpha="0.2"
+		width="100%"
+		alpha="0"
+		y="100"
+		css="color:#ffffff;font-size:26px;padding:12px;text-shadow:0 1px 4px rgba(0,0,0,0.3);text-align:center;" />
+
+	<!--沙盘添加点-->
+	<action name="add_sandmap_point">
+		if (%1 !== null AND %2 !== null,
+			<!--添加点-->
+			txtadd(splname, 'sandmap_point_layer_', get(%3));
+			addlayer(get(splname));
+			set(layer[get(splname)].x, calc(%1 - 10));
+			set(layer[get(splname)].y, calc(%2 - 10));
+			set(layer[get(splname)].link, get(%3));
+			layer[get(splname)].loadstyle(sandmap_point_layer);
+			<!--针对当前点处理-->
+			if (
+				current_scene == %3,
+				set(layer[sandmap_range].x, calc(%1));
+				set(layer[sandmap_range].y, calc(%2));
+				set(layer[get(splname)].crop, '0|40|40|40');
+			);
+		);
+	</action>
+
+	<!--沙盘点的样式-->
+	<style name="sandmap_point_layer"
+		type="button"
+		visible="true"
+		width="20"
+		height="20"
+		keep="true"
+		url="images/point-sandmap.png"
+		parent="layer[sandmapbox]"
+		onclick="transform_scene()"
+		crop="0|0|40|40"
+		zorder="3" />
+
+	<!--侦听视角转变事件-->
+	<events name="compass_events" keep="true" onviewchange="compass_update_rotate();" />
+
+	<!-- 更新旋转数值 -->
+	<action name="compass_update_rotate">
+		if (
+			has_sandmap,
+			set(hlookat_offset, 0);
+			if (
+				scene[get(current_scene)].direction !== null,
+				set(current_direction, get(scene[get(current_scene)].direction));,
+				set(current_direction, 0);
+			);
+			mod(val, calc(view.hlookat + current_direction), 360);
+			set(layer[sandmap_range].rotate, get(val));
+		);
+	</action>
+
+	<!--沙盘旋转容器样式-->
+	<style name="sandmap_range"
+		keep="true"
+		width="100"
+		height="100"
+		edge="center"
+		url="images/range-sandmap.png"
+		crop="0|0|200|200"
+		parent="layer[sandmapbox]"
+		handcursor="false"
+		enabled="false"
+		rotate="90.0"
+		zorder="2" />
+
+	<!--沙盘-->
+	<layer name="sandmapbox" type="container" visible="false" keep="true" align="righttop" y="10" x="60" zorder="9">
+		<layer name="sandmap" keep="true" handcursor="false" zorder="1" />
+		<layer name="sandmap_range" style="sandmap_range" />
+	</layer>
+
+	<!--重力感应切换-->
+	<action name="toggle_gravity">
+		def(t, boolean, get(toggle));
+		set(toggle, calc(!t));
+		if (
+			t,
+			set(crop, '0|0|100|100');
+			set(plugin[gyro].enabled, true);
+			show_tips('重力感应开启', 1.5);
+			,
+			set(crop, '0|100|100|100');
+			set(plugin[gyro].enabled, false);
+			show_tips('重力感应关闭', 1.5);
+		);
+	</action>
+	<style name="gravity"
+		visible="false"
+		keep="true"
+		width="45"
+		height="45"
+		crop="0|0|100|100"
+		url="images/gravity.png"
+		align="righttop"
+		toggle="false"
+		zorder="2"
+		onclick="toggle_gravity()" />
+	<layer name="gravity" style="gravity" />
+
+	<!--VR切换-->
+	<action name="enter_vr">
+		plugin[WebVR].enterVR();
+	</action>
+	<style name="vr"
+		visible="false"
+		keep="true"
+		width="45"
+		height="45"
+		crop="0|0|100|100"
+		url="images/vr.png"
+		align="righttop"
+		toggle="true"
+		zorder="2"
+		onclick="enter_vr()" />
+	<layer name="vr" style="vr" />
+
+	<!--背景音乐开关-->
+	<action name="toggle_bg_sound">
+		def(t, boolean, get(toggle));
+		set(toggle, calc(!t));
+		if (
+			t,
+			set(crop, '0|0|100|100');
+			pausesound(bgsnd);
+			show_tips('背景音乐关闭', 1.5);,
+			set(crop, '0|100|100|100');
+			show_tips('背景音乐开启', 1.5);
+			if (
+				loadedsound === true,
+				resumesound(bgsnd);,
+				playsound(bgsnd, get(config[config].bgsound), 0);
+				def(loadedsound, boolean, true);
+			);
+		);
+	</action>
+	<style name="bg_sound"
+		visible="false"
+		keep="true"
+		width="45"
+		height="45"
+		crop="0|100|100|100"
+		url="images/bgsound.png"
+		align="righttop"
+		toggle="true"
+		zorder="2"
+		onclick="toggle_bg_sound()" />
+	<layer name="bg_sound" style="bg_sound" />
+
+	<!--沙盘开关-->
+	<action name="toggle_sandmap">
+		def(t, boolean, get(toggle));
+		set(toggle, calc(!t));
+		if (
+			t,
+			set(crop, '0|0|100|100');
+			set(layer[sandmapbox].enabled, 'false');
+			tween(layer[sandmapbox].alpha, 0 ,0.3);
+			tween(layer[sandmapbox].x, 0 , 0.3, 'easeInBack');,
+			set(crop, '0|100|100|100');
+			set(layer[sandmapbox].enabled, 'true');
+			tween(layer[sandmapbox].alpha, 1 ,0.3);
+			tween(layer[sandmapbox].x, 65 , 0.3, 'easeOutBack');
+		);
+	</action>
+	<style name="sandmap_switch"
+		visible="false"
+		keep="true"
+		width="45"
+		height="45"
+		crop="0|100|100|100"
+		url="images/switch-sandmap.png"
+		align="righttop"
+		toggle="true"
+		zorder="2"
+		onclick="toggle_sandmap()" />
+	<layer name="sandmap_switch" style="sandmap_switch" />
+
+	<!--场景快捷切换-->
+	<style name="tab_box"
+		keep="true"
+		width="100%"
+		height="120"
+		x="0"
+		y="80"
+		bgalpha="0.2"
+		align="bottom"
+		bgcolor="0x000000"
+		type="container"
+		maskchildren="false"
+		zorder="9" />
+	<style name="scroll_area"
+		url="plugins/scrollarea.js"
+		keep="true"
+		direction="h"
+		width="100%"
+		height="100"
+		align="center"
+		onloaded="setcenter(0,0);" />
+	<style name="scroll_item"
+		keep="true"
+		width="100"
+		height="100"
+		bgalpha="0.8"
+		bgborder="3 0xffffff"
+		type="container"
+		align="left" />
+	<style name="scroll_item_title"
+		url="textfield.swf"
+		keep="true"
+		width="100"
+		enabled="false"
+		backgroundcolor="0x000000"
+	    backgroundalpha="0.3"
+		align="bottomcenter"
+		css="text-align:center;font-size:14px;line-height:18px;color:#fff;" />
+	<layer name="tab_box" style="tab_box">
+		<layer name="scroll_area" style="scroll_area"></layer>
+	</layer>
+
+	<!--跳转场景-->
+	<action name="transform_scene">
+		if (
+			current_scene !== link,
+			set(current_scene, get(link));
+			if (
+				has_sandmap,
+				txtadd(current_sandmap_point_name, 'sandmap_point_layer_', get(link));
+				for (
+					set(i, 0), i LT scene.count, inc(i),
+					txtadd(sandmap_point_name, 'sandmap_point_layer_', get(scene[get(i)].name));
+					if (
+						sandmap_point_name == current_sandmap_point_name,
+						set(layer[get(sandmap_point_name)].crop, '0|40|40|40');
+						set(layer[sandmap_range].x, calc(layer[get(sandmap_point_name)].x + 10));
+						set(layer[sandmap_range].y, calc(layer[get(sandmap_point_name)].y + 10));
+						,
+						set(layer[get(sandmap_point_name)].crop, '0|0|40|40');
+					);
+				);
+			);
+			for (
+				set(i, 0), i LT scene.count, inc(i),
+				txtadd(thumb_item, 'thumb_item_', get(scene[get(i)].name));
+				if (
+					scene[get(i)].name == current_scene,
+					set(layer[get(thumb_item)].bgborder, '3 0xF6B64C');,
+					set(layer[get(thumb_item)].bgborder, '3 0xFFFFFF');
+				);
+			);
+			loadscene(get(current_scene), null, MERGE, ZOOMBLEND(0.8, 1.1, easeOutQuad));
+		);
+	</action>
+
+	<!--热点样式-->
+	<style name="hotspot"
+		type="image"
+		url="images/arrow.png"
+		width="prop"
+		height="60"
+		zoom="false"
+		onloaded="hotspot_init(128, 128, 60)"
+		onclick="transform_scene()" />
+
+	<!--热点提示层样式-->
+	<style name="hotspot_layer"
+		url="textfield.swf"
+		align="center"
+		edge="center"
+		height="24"
+		y="-20"
+		backgroundcolor="0x000000"
+		backgroundalpha="0.6"
+		roundedge="4"
+		enabled="false"
+		css="text-align: center; line-height: 24px; padding: 0 6px; margin: 0; color: #ffffff;  font-size:12px;" />
+
+	<!--热点初始化-->
+	<action name="hotspot_init">
+		<!--设置箭头-->
+		if (
+			direction == 'left',
+			set(nurl, get(url));
+			txtreplace(nurl, 'arrow.png', 'arrow-left.png');
+			set(url, get(nurl));
+		);
+		if (
+			direction == 'right',
+			set(nurl, get(url));
+			txtreplace(nurl, 'arrow.png', 'arrow-right.png');
+			set(url, get(nurl));
+		);
+		<!--add layer-->
+		txtadd(lname, 'hotspotinit_layer_', get(name));
+		addlayer(get(lname));
+		layer[get(lname)].loadstyle(hotspot_layer);
+		txtadd(sname, 'hotspot[', get(name), ']');
+		set(layer[get(lname)].parent, get(sname));
+		set(layer[get(lname)].html, get(title));
+		<!--animate-->
+		registerattribute(xframes, calc((imagewidth / %1) BOR 0));
+		registerattribute(yframes, calc((imageheight / %2) BOR 0));
+		registerattribute(frames, calc(xframes * yframes));
+		registerattribute(frame, 0); set(crop, '0|0|%1|%2');
+		setinterval(
+			calc('crop_anim_' + name),
+			calc(1.0 / %3),
+			if(
+				loaded,
+				inc(frame);
+				if(
+					frame GE frames,
+					set(frame,0);
+				);
+				mod(xpos, frame, xframes);
+				div(ypos, frame, xframes);
+				Math.floor(ypos); mul(xpos, %1);
+				mul(ypos, %2);
+				calc(crop, xpos + '|' + ypos + '|%1|%2');,
+				clearinterval(calc('crop_anim_' + name));
+			);
+		);
+	</action>
+
+</krpano>
