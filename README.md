@@ -47,6 +47,20 @@
 
 另外`<scene ...>`中如果有`thumburl`和`title`这两属性，则会被列到下方的场景列表中去。
 
+### 入口箭头：
+```
+<hotspot style="hotspot"
+	direction="right"
+	ath="12.878134636095"
+	atv="10.3502532533291"
+	link="woshi"
+	title="卧室" />
+```
+在`<scene ...>`内可加入`hotspot`箭头，其中`style`不能更改，或者你要自己重写该箭头的样式那随意  
+`direction`只3种，`left`、`right`或`ahead`，箭头分别向左，右和前  
+`ath`和`atv`分别为场景内的横向和纵向坐标  
+`link`表示链接的场景  
+`title`中的文字将会在箭头上显示  
 
 
 ### 目录结构：
