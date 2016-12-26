@@ -8,7 +8,6 @@
 		vr="true"
 		bgsound="krpano/sound.mp3"
 		bgsoundplay="false"
-		x="10"
 		y="10"
 		entry="keting" />
 
