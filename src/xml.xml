@@ -33,6 +33,12 @@
 			link="shufang"
 			title="书房" />
 
+		<hotspot style="video"
+			ath="0"
+			atv="0"
+			link="http://www.baidu.com/v.mp4"
+			title="书房" />
+
 		<view hlookat="160" fovmin="60" fov="95" fovmax="120" />
 		<preview url="keting/preview.jpg" />
 		<image>

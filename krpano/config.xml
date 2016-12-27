@@ -617,4 +617,14 @@
 		);
 	</action>
 
+	<!--视频热点样式-->
+	<style name="video"
+		type="image"
+		url="images/arrow.png"
+		width="prop"
+		height="60"
+		zoom="false"
+		alpha="0"
+		onloaded="hotspot_init(128, 128, 60)" />
+
 </krpano>
