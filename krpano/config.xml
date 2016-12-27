@@ -542,7 +542,13 @@
 					set(layer[get(thumb_item)].bgborder, '3 0xFFFFFF');
 				);
 			);
-			loadscene(get(current_scene), null, MERGE, ZOOMBLEND(0.8, 1.1, easeOutQuad));
+			set(control.usercontrol, off);
+			if (
+				wantanimate === true,
+				looktohotspot(get(name));
+			);
+			loadscene(get(current_scene), null, MERGE, BLEND(0.5, easeInCubic));
+			set(control.usercontrol, all);
 		);
 	</action>
 
@@ -554,6 +560,7 @@
 		height="60"
 		zoom="false"
 		alpha="0"
+		wantanimate="true"
 		onloaded="hotspot_init(128, 128, 60)"
 		onclick="transform_scene()" />
 
