@@ -1,0 +1,32 @@
+﻿<krpano>
+	
+	<!--基础功能-->
+	<include url="../../src/config.xml" />
+
+	<config name="config"
+		gravity="true"
+		vr="true"
+		bgsound="./sound.mp3"
+		bgsoundplay="false"
+		y="10"
+		entry="shufang" />
+
+	<sandmap name="sandmap"
+		visible="false"
+		bg="sandmap.png"
+		width="200"
+		height="231" />
+
+	<scene name="shufang" title="书房" pointx="155" pointy="40" direction="15" thumburl="shufang/thumb.jpg">
+		<view hlookat="20" fovmin="60" fov="95" fovmax="120" />
+		<preview url="shufang/preview.jpg" />
+		<image>
+			<cube url="shufang/mobile_%s.jpg" />
+		</image>
+	</scene>
+
+	<!--mall-->
+	<include url="../../src/plugins/mall.xml" />
+
+
+</krpano>

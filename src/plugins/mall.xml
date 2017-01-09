@@ -1,0 +1,7 @@
+<krpano>
+
+	<action name="init_mall" autorun="onstart">
+		showlog();
+	</action>
+
+</krpano>

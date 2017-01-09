@@ -4,14 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run server",
-    "build": "rm -rf ./dist && webpack --bail --progress --profile",
-    "watch": "webpack --progress --colors --watch",
-    "server": "webpack-dev-server --history-api-fallback --inline --progress"
+    "start": "npm run dev",
+    "build": "rm -rf ./dist && webpack --config webpack/dist.js --bail --progress --profile",
+    "dev": "node webpack/dev.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "webpack": "^1.14.0"
+    "opn": "^4.0.2",
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.2"
   }
 }

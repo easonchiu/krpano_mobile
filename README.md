@@ -23,7 +23,7 @@
 <config name="config"
 	gravity="true"
 	vr="true"
-	bgsound="krpano/sound.mp3"
+	bgsound="[sound.mp3]"
 	bgsoundplay="false"
 	x="10"
 	y="10"
@@ -42,9 +42,9 @@
 ```
 <sandmap name="sandmap"
 	visible="false"
-	bg="src/sandmap.png"
-	width="200"
-	height="231" />
+	bg="[sandmap.png]"
+	width="[200]"
+	height="[200]" />
 ```
 说明：  
 `visible`：是否一直保持显示状态，建议`false`  

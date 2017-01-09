@@ -47,14 +47,14 @@
 
 	<!-- the VR cursor hotspot -->
 	<hotspot name="vr_cursor" keep="true"
-	         url="../images/webvr_cursor.png"
-	         visible="false"
-	         enabled="false"
-	         distorted="true"
-	         crop="0|0|80|80"
-	         scale="0.3"
-	         depth="1000"
-	         />
+		url="../images/webvr_cursor.png"
+		visible="false"
+		enabled="false"
+		distorted="true"
+		crop="0|0|80|80"
+		scale="0.3"
+		depth="1000"
+		/>
 
 
 	<!-- vr_auto_click() - call this action in the onover event of a

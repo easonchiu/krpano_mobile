@@ -52,8 +52,9 @@
 			set(hotspot[get(i)].alpha, 0);
 		);
 
-		tween(view.pannini, 0.0, 2, easeOutQuad);
-		tween(view.fisheye, 0.35, 2, easeOutQuad);
+		tween(view.pannini, 0.0, 1, easeOutQuad);
+		tween(view.fisheye, 0.35, 1, easeOutQuad);
+		tween(view.distortion, 0, 1, easeOutQuad);
 		tween(view.hlookat, get(xml.view.hlookat), 2, easeOutQuad);
 		tween(view.vlookat, get(xml.view.vlookat), 2, easeOutQuad);
 		tween(view.fov, get(xml.view.fov), 2, easeOutQuad,
@@ -151,35 +152,41 @@
 				set(layer[sandmap_switch].toggle, false);
 			);
 		);
-		for (
-			set(i, 0), i LT scene.count, inc(i),
-			if (scene[get(i)].thumburl !== null,
-				txtadd(thumb_item, 'thumb_item_', get(scene[get(i)].name));
-				addlayer(get(thumb_item));
-				set(layer[get(thumb_item)].parent, layer[scroll_area]);
-				set(layer[get(thumb_item)].x, calc(i * 120 + 50));
-				layer[get(thumb_item)].loadstyle(scroll_item);
-				txtadd(thumb_pic, 'thumb_item_pic_', get(scene[get(i)].name));
-				addlayer(get(thumb_pic));
-				set(layer[get(thumb_pic)].parent, get(thumb_item));
-				set(layer[get(thumb_pic)].keep, true);
-				set(layer[get(thumb_pic)].url, get(scene[get(i)].thumburl));
-				set(layer[get(thumb_pic)].link, get(scene[get(i)].name));
-				set(layer[get(thumb_pic)].width, 100%);
-				set(layer[get(thumb_pic)].height, 100%);
-				set(layer[get(thumb_pic)].onclick, transform_scene);
-				txtadd(thumb_title, 'thumb_item_title_', get(scene[get(i)].name));
-				addlayer(get(thumb_title));
-				set(layer[get(thumb_title)].parent, get(thumb_item));
-				set(layer[get(thumb_title)].html, get(scene[get(i)].title));
-				layer[get(thumb_title)].loadstyle(scroll_item_title);
-				if (
-					scene[get(i)].name == current_scene,
-					set(layer[get(thumb_item)].bgborder, '3 0xF6B64C');
+		if(
+			scene.count LT 2,
+			set(layer[tab_box].visible, false);
+			set(layer[tab_switch].visible, false);,
+			for (
+				set(i, 0), i LT scene.count, inc(i),
+				if (scene[get(i)].thumburl !== null,
+					txtadd(thumb_item, 'thumb_item_', get(scene[get(i)].name));
+					addlayer(get(thumb_item));
+					set(layer[get(thumb_item)].parent, layer[scroll_area]);
+					set(layer[get(thumb_item)].x, calc(i * 120 + 50));
+					layer[get(thumb_item)].loadstyle(scroll_item);
+					txtadd(thumb_pic, 'thumb_item_pic_', get(scene[get(i)].name));
+					addlayer(get(thumb_pic));
+					set(layer[get(thumb_pic)].parent, get(thumb_item));
+					set(layer[get(thumb_pic)].keep, true);
+					set(layer[get(thumb_pic)].url, get(scene[get(i)].thumburl));
+					set(layer[get(thumb_pic)].link, get(scene[get(i)].name));
+					set(layer[get(thumb_pic)].width, 100%);
+					set(layer[get(thumb_pic)].height, 100%);
+					set(layer[get(thumb_pic)].onclick, transform_scene);
+					txtadd(thumb_title, 'thumb_item_title_', get(scene[get(i)].name));
+					addlayer(get(thumb_title));
+					set(layer[get(thumb_title)].parent, get(thumb_item));
+					set(layer[get(thumb_title)].html, get(scene[get(i)].title));
+					layer[get(thumb_title)].loadstyle(scroll_item_title);
+					if (
+						scene[get(i)].name == current_scene,
+						set(layer[get(thumb_item)].bgborder, '3 0xF6B64C');
+					);
 				);
 			);
+			set(layer[scroll_area].width, calc(scene.count * 120 - 20 + 100));
 		);
-		set(layer[scroll_area].width, calc(scene.count * 120 - 20 + 100));
+		
 	</action>
 
 	<!--提示-->
@@ -238,10 +245,12 @@
 			firstscene,
 			set(firstscene, false);
 			wait(1);
-			init_view();
+			init_view();,
 		);
+		
 		hide_tips();
 		set(layer[scene_name_tips].html, get(scene[get(current_scene)].title));
+
 		delayedcall(
 			titledelay,
 			1,
@@ -542,12 +551,24 @@
 					set(layer[get(thumb_item)].bgborder, '3 0xFFFFFF');
 				);
 			);
+
 			set(control.usercontrol, off);
-			if (
+			<!-- if (
 				wantanimate === true,
-				looktohotspot(get(name));
-			);
-			loadscene(get(current_scene), null, MERGE, BLEND(0.5, easeInCubic));
+				copy(ath2, ath);
+				if (
+					calc(view.hlookat - ath2) LE 180 AND calc(view.hlookat - ath2) GT -180,
+					set(ath2, ath2);,
+					set(ath2, -ath2);,
+				);
+				tween(view.hlookat, get(ath2), 1, easeOutCubic);
+				tween(view.vlookat, 1.2, 1, easeOutCubic);
+				set(transformfov, true);
+				set(tweenbackfov, get(view.fov));
+				wait(0.5);
+				tween(view.fov, 50, 2, easeOutCubic);
+			); -->
+			loadscene(get(current_scene), null, MERGE, BLEND(2, easeOutCubic));
 			set(control.usercontrol, all);
 		);
 	</action>
