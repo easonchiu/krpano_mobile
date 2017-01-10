@@ -1,7 +1,58 @@
 ﻿<krpano>
 	
 	<!--基础功能-->
-	<include url="../../src/config.xml" />
+	<include url="../../src/base.xml" />
+
+	<!--mall-->
+	<include url="../../src/plugins/mall.xml" />
+
+	<mall>
+		<product name="p1"
+			atscene="keting"
+			ath="0"
+			atv="0"
+			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯1"
+			thumb="products/1.jpg"
+			price="4180"
+			link="http://www.baidu.com"
+			callback="alert(1)" />
+		<product name="p2"
+			atscene="keting"
+			ath="12.878134636095"
+			atv="10.3502532533291"
+			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯2"
+			thumb="products/2.jpg"
+			price="4180"
+			link="http://www.baidu.com"
+			callback="alert(2)" />
+		<product name="p3"
+			atscene="keting"
+			ath="90"
+			atv="60"
+			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯3"
+			thumb="products/3.jpg"
+			price="4180"
+			link="http://www.baidu.com"
+			callback="alert(3)" />
+		<product name="p4"
+			atscene="keting"
+			ath="-30"
+			atv="20"
+			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯3"
+			thumb="products/4.jpg"
+			price="4180"
+			link="http://www.baidu.com"
+			callback="alert(4)" />
+		<product name="p5"
+			atscene="keting"
+			ath="-44.878134636095"
+			atv="30.3502532533291"
+			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯3"
+			thumb="products/5.jpg"
+			price="4180"
+			link="http://www.baidu.com"
+			callback="alert(4)" />
+	</mall>
 
 	<config name="config"
 		gravity="true"
@@ -9,15 +60,17 @@
 		bgsound="./sound.mp3"
 		bgsoundplay="false"
 		y="10"
-		entry="shufang" />
+		entry="keting" />
+
 
 	<sandmap name="sandmap"
 		visible="false"
 		bg="sandmap.png"
-		width="200"
-		height="231" />
+		width="201"
+		height="180" />
 
-	<scene name="shufang" title="书房" pointx="155" pointy="40" direction="15" thumburl="shufang/thumb.jpg">
+
+	<scene name="shufang" title="书房" pointx="55" pointy="125" direction="180" thumburl="shufang/thumb.jpg">
 		<view hlookat="20" fovmin="60" fov="95" fovmax="120" />
 		<preview url="shufang/preview.jpg" />
 		<image>
@@ -25,8 +78,16 @@
 		</image>
 	</scene>
 
-	<!--mall-->
-	<include url="../../src/plugins/mall.xml" />
+
+	<scene name="keting" title="客厅" pointx="155" pointy="138" direction="-180" thumburl="keting/thumb.jpg">
+		<view hlookat="90" fovmin="60" fov="95" fovmax="120" />
+		<preview url="keting/preview.jpg" />
+		<image>
+			<cube url="keting/mobile_%s.jpg" />
+		</image>
+	</scene>
+
+	
 
 
 </krpano>

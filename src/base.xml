@@ -186,7 +186,6 @@
 			);
 			set(layer[scroll_area].width, calc(scene.count * 120 - 20 + 100));
 		);
-		
 	</action>
 
 	<!--提示-->
@@ -272,7 +271,6 @@
 		keep="true"
 		url="textfield.swf"
 		html=""
-		enabled="false"
 		align="topcenter"
 		backgroundcolor="0xffffff"
 		backgroundalpha="0.2"
@@ -509,6 +507,7 @@
 		y="0"
 		align="centerbottom"
 		onclick="switch_tap()"
+		visible="false"
 		zorder="8" />
 	<layer name="tab_switch" style="tab_switch" />
 	<action name="switch_tap">

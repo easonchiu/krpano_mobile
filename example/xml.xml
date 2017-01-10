@@ -1,7 +1,7 @@
 ﻿<krpano>
 	
 	<!--基础功能-->
-	<include name="include" url="../../src/config.xml" />
+	<include name="include" url="../../src/base.xml" />
 
 	<config name="config"
 		gravity="true"
