@@ -1,0 +1,62 @@
+<krpano>
+
+	<!--引用官方插件-->
+	<plugin name="@sound_interface"
+        url="soundinterface.js"
+        preload="true"
+        keep="true" />
+
+
+	<action name="@sound_init" autorun="onstart">
+		if (
+			sound[0].url !== null,
+			if (
+				sound[0].autoplay,
+				playsound($sound, get(sound[0].url), 0);
+				def($sound_is_playing, boolean, true);
+				def($sound_is_loaded, boolean, true);,
+				set(layer[@sound].crop, '0|0|100|100');
+				def($sound_is_playing, boolean, false);
+			);,
+			removelayer(@sound, true);
+		);
+	</action>
+
+	<!--背景音乐开关-->
+	<action name="@sound_toggle">
+		if (
+			$sound_is_playing,
+			set(crop, '0|0|100|100');
+			pausesound($sound);
+			@toast.show('背景音乐关闭', 1.5);
+			def($sound_is_playing, boolean, false);,
+			set(crop, '0|100|100|100');
+			@toast.show('背景音乐开启', 1.5);
+			if (
+				$sound_is_loaded,
+				resumesound($sound);,
+				playsound($sound, get(sound[0].url), 0);
+				def($sound_is_loaded, boolean, true);
+			);
+			def($sound_is_playing, boolean, true);
+		);
+	</action>
+
+	<style name="@sound"
+		visible="false"
+		alpha="0"
+		keep="true"
+		width="45"
+		height="45"
+		crop="0|100|100|100"
+		url="../images/bgsound.png"
+		align="righttop"
+		toggle="true"
+		zorder="2"
+		onclick="@sound_toggle()" />
+
+	<layer name="@sound" style="@sound" />
+
+
+
+</krpano>

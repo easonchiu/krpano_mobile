@@ -1,0 +1,90 @@
+/*
+Icon classes can be used entirely standalone. They are named after their original file names.
+
+Example usage in HTML:
+
+`display: block` sprite:
+<div class="icon-home"></div>
+
+To change `display` (e.g. `display: inline-block;`), we suggest using a common CSS class:
+
+// CSS
+.icon {
+  display: inline-block;
+}
+
+// HTML
+<i class="icon icon-home"></i>
+*/
+.icon-CA-37A-_00000 {
+  background-image: url(p2.png);
+  background-position: -600px 0px;
+  width: 600px;
+  height: 600px;
+}
+.icon-CA-37A-_00001 {
+  background-image: url(p2.png);
+  background-position: 0px -1200px;
+  width: 600px;
+  height: 600px;
+}
+.icon-CA-37A-_00002 {
+  background-image: url(p2.png);
+  background-position: 0px -600px;
+  width: 600px;
+  height: 600px;
+}
+.icon-CA-37A-_00003 {
+  background-image: url(p2.png);
+  background-position: -600px -600px;
+  width: 600px;
+  height: 600px;
+}
+.icon-CA-37A-_00004 {
+  background-image: url(p2.png);
+  background-position: -1200px 0px;
+  width: 600px;
+  height: 600px;
+}
+.icon-CA-37A-_00005 {
+  background-image: url(p2.png);
+  background-position: -1200px -600px;
+  width: 600px;
+  height: 600px;
+}
+.icon-CA-37A-_00006 {
+  background-image: url(p2.png);
+  background-position: 0px 0px;
+  width: 600px;
+  height: 600px;
+}
+.icon-CA-37A-_00007 {
+  background-image: url(p2.png);
+  background-position: -600px -1200px;
+  width: 600px;
+  height: 600px;
+}
+.icon-CA-37A-_00008 {
+  background-image: url(p2.png);
+  background-position: -1200px -1200px;
+  width: 600px;
+  height: 600px;
+}
+.icon-CA-37A-_00009 {
+  background-image: url(p2.png);
+  background-position: -1800px 0px;
+  width: 600px;
+  height: 600px;
+}
+.icon-CA-37A-_00010 {
+  background-image: url(p2.png);
+  background-position: -1800px -600px;
+  width: 600px;
+  height: 600px;
+}
+.icon-CA-37A-_00011 {
+  background-image: url(p2.png);
+  background-position: -1800px -1200px;
+  width: 600px;
+  height: 600px;
+}

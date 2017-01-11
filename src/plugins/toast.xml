@@ -1,0 +1,37 @@
+<krpano>
+
+	<action name="@toast.show">
+		stopdelayedcall($toast_delay);
+		set(layer[@toast].html, %1);
+		set(layer[@toast].alpha, 0);
+		tween(layer[@toast].alpha, 1, 0.3, easeOutQuad);
+		if (
+			%2 != null,
+			delayedcall(
+				$toast_delay,
+				%2,
+				@toast.hide();
+			);
+		);
+	</action>
+
+	<action name="@toast.hide">
+		tween(layer[@toast].alpha, 0, 0.3, easeOutQuad);
+	</action>
+
+
+	<layer name="@toast"
+		keep="true"
+		url="textfield.swf"
+		backgroundcolor="0x000000"
+	    backgroundalpha="0.7"
+	    roundedge="30"
+	    enabled="false"
+	    css="color:#ffffff;font-size:16px;padding:6px 12px;"
+	    html=""
+	    alpha="0"
+	    align="center"
+	    zorder="9">
+	</layer>
+
+</krpano>

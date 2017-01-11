@@ -11,16 +11,21 @@
         keep="true" />
 
 	<!--背景音乐-->
-	<plugin name="soundinterface"
-        url="plugins/soundinterface.js"
-        preload="true"
-        keep="true" />
+	<include url="plugins/sound.xml" />
 
     <!--自动旋转-->
     <autorotate enabled="true"
 		waittime="5.0"
 		speed="5.0"
 		horizon="0.0" />
+
+	<!--提示框-->
+	<include url="plugins/toast.xml" />
+
+	<!--沙盘插件-->
+	<include url="plugins/sandmap.xml" />
+	
+
 
     <!--初始化-->
     <action name="init_view">
@@ -44,7 +49,9 @@
 		set(layer[sandmap_switch].alpha, 0);
 		set(layer[sandmapbox].alpha, 0);
 		set(layer[vr].alpha, 0);
-		set(layer[bg_sound].alpha, 0);
+
+
+
 		set(layer[gravity].alpha, 0);
 		set(layer[tab_switch].alpha, 0);
 		for (
@@ -65,7 +72,10 @@
 				tween(layer[sandmapbox].alpha, 1);
 			);
 			tween(layer[vr].alpha, 1);
-			tween(layer[bg_sound].alpha, 1);
+
+			set(layer[@sound].visible, true);
+			tween(layer[@sound].alpha, 1);
+
 			tween(layer[gravity].alpha, 1);
 			tween(layer[tab_switch].alpha, 0.75);
 
@@ -114,20 +124,14 @@
 			set(layer[vr].y, get(y));
 			set(y, calc(y + layer[vr].height + 10));
 		);
+
 		if (
-			config[config].bgsound AND config[config].bgsound != '',
-			set(layer[bg_sound].visible, true);
-			set(layer[bg_sound].x, get(x));
-			set(layer[bg_sound].y, get(y));
-			set(y, calc(y + layer[bg_sound].height + 10));
-			if (
-				config[config].bgsoundplay !== false,
-				playsound(bgsnd, get(config[config].bgsound), 0);
-				def(loadedsound, boolean, true);,
-				set(layer[bg_sound].crop, '0|0|100|100');
-				set(layer[bg_sound].toggle, false);
-			);
+			layer[@sound],
+			set(layer[@sound].x, get(x));
+			set(layer[@sound].y, get(y));
+			set(y, calc(y + layer[@sound].height + 10));
 		);
+		
 		if (
 			has_sandmap,
 			set(layer[sandmapbox].visible, true);
@@ -188,32 +192,7 @@
 		);
 	</action>
 
-	<!--提示-->
-	<layer name="tips"
-		keep="true"
-		url="textfield.swf"
-		backgroundcolor="0x000000"
-	    backgroundalpha="0.6"
-	    roundedge="3"
-	    enabled="false"
-	    alpha="0"
-	    css="color:#ffffff;font-size:16px;padding:6px 12px;"
-	    html=""
-	    align="center"
-	    zorder="9" />
-	<action name="show_tips">
-		stopdelayedcall(center_tips_delay);
-		set(layer[tips].html, %1);
-		set(layer[tips].alpha, 0);
-		tween(layer[tips].alpha, 1, 0.3, easeOutQuad);
-		if (
-			%2 != null,
-			delayedcall(center_tips_delay, %2, hide_tips());
-		);
-	</action>
-	<action name="hide_tips">
-		tween(layer[tips].alpha, 0, 0.3, easeOutQuad);
-	</action>
+	
 
 	<!--切换场景loading-->
 	<events name="on_new_scene" keep="true" onxmlcomplete="startloading();" onnewscene="endloading();" />
@@ -395,37 +374,6 @@
 		onclick="enter_vr()" />
 	<layer name="vr" style="vr" />
 
-	<!--背景音乐开关-->
-	<action name="toggle_bg_sound">
-		def(t, boolean, get(toggle));
-		set(toggle, calc(!t));
-		if (
-			t,
-			set(crop, '0|0|100|100');
-			pausesound(bgsnd);
-			show_tips('背景音乐关闭', 1.5);,
-			set(crop, '0|100|100|100');
-			show_tips('背景音乐开启', 1.5);
-			if (
-				loadedsound === true,
-				resumesound(bgsnd);,
-				playsound(bgsnd, get(config[config].bgsound), 0);
-				def(loadedsound, boolean, true);
-			);
-		);
-	</action>
-	<style name="bg_sound"
-		visible="false"
-		keep="true"
-		width="45"
-		height="45"
-		crop="0|100|100|100"
-		url="images/bgsound.png"
-		align="righttop"
-		toggle="true"
-		zorder="2"
-		onclick="toggle_bg_sound()" />
-	<layer name="bg_sound" style="bg_sound" />
 
 	<!--沙盘开关-->
 	<action name="toggle_sandmap">
@@ -645,14 +593,6 @@
 		);
 	</action>
 
-	<!--视频热点样式-->
-	<style name="video"
-		type="image"
-		url="images/arrow.png"
-		width="prop"
-		height="60"
-		zoom="false"
-		alpha="0"
-		onloaded="hotspot_init(128, 128, 60)" />
+
 
 </krpano>

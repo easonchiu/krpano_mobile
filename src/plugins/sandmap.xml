@@ -1,0 +1,7 @@
+<krpano>
+
+	<action name="@sandmap_init" autorun="onstart">
+		
+	</action>
+
+</krpano>

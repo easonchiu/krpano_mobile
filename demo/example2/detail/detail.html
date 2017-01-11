@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0,minimal-ui">
+    <title>软装神器</title>
+    <script>
+        +function (b) {
+            var h = document.documentElement, w = Math.min(h.clientWidth, h.clientHeight);
+            w = w / b * 100;
+            w -= (w - 50) / 2;
+            h.style.fontSize = Math.round(w) + "px";
+        }(750);
+    </script>
+    <script src="hammer.min.js"></script>
+    <link href="http://sunyue-img.todoingnow.com/css/reset.css" rel="stylesheet">
+
+    <style>
+        .top-menu {
+            width: 100%;
+            left: 0;
+            position: fixed;
+            top: 0;
+            white-space: nowrap;
+            background: white;
+            height: 40px;
+            z-index: 10;
+        }
+
+        .details {
+            height: 100%;
+            width: 100%;
+            position: relative;
+            overflow-x: hidden;
+            /*left: 0;*/
+            /*top: 0;*/
+            margin-top: 40px;
+        }
+
+        .top-menu > .menu-col-2 {
+            width: 50%;
+            display: inline-block;
+            white-space: nowrap;
+            height: 40px;
+            /*padding: 15px 0;*/
+        }
+
+        .bottom-menu {
+            width: 100%;
+            left: 0;
+            position: fixed;
+            bottom: 0;
+            white-space: nowrap;
+            text-align: center;
+            font-size: 12px;
+            color: #8D8D8E;
+            background: white;
+            height: 50px;
+        }
+
+        .bottom-menu > .menu-col-2 > .contact {
+            width: 40%;
+            display: inline-block;
+            white-space: normal;
+        }
+
+        .bottom-menu > .menu-col-2 {
+            width: 50%;
+            display: inline-block;
+            white-space: nowrap;
+            height: 50px;
+            vertical-align: top;
+            padding: 10px 0;
+            /*padding: 15px 0;*/
+        }
+
+        .top-menu > .left {
+            position: absolute;
+            left: 16px;
+            top: 10px
+        }
+
+        .top-menu > .right {
+            position: absolute;
+            right: 16px;
+            top: 10px
+        }
+
+        .bottom-menu > .menu-col-2 > .other {
+            width: 30%;
+            display: inline-block;
+            white-space: normal;
+        }
+
+        .bottom-menu > .menu-col-2.add-cart {
+            background: #2F96DA;
+            color: white;
+            font-size: 16px;
+            padding: 15px 0;
+        }
+
+        .bottom-menu > .menu-col-2 > .menu-icon-left {
+            /*vertical-align: middle;*/
+            margin-right: 3%;
+        }
+
+        body, html {
+            background: #F4F4F4;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            color: #4A4A4A;
+            font-size: 16px;
+        }
+
+        .nav {
+            height: 89px;
+            background: white;
+            width: 100%;
+        }
+
+        .pic360 {
+            width: 100%;
+            /*background: white;*/
+            position: relative;
+            min-height: 420px;
+        }
+
+        .info {
+            width: 100%;
+            background: white;
+            min-height: 202px;
+            overflow-y: visible;
+            margin-top: 10px;
+            margin-bottom: 60px;
+            padding: 29px;
+        }
+
+        #productPic {
+            position: relative;
+            left: 50%;
+        }
+
+        .summary {
+            width: 100%;
+            height: 103px;
+            background: white;
+            padding: 30px 29px 15px 29px;
+        }
+
+        .summary > .list-price {
+            font-size: 24px;
+        }
+
+        .summary > .list-price > span {
+            color: #D0021B;
+        }
+
+        .info > p{
+            line-height: 2;
+        }
+    </style>
+    <link href="p/p1/p1.css" rel="stylesheet">
+    <!--<link href="http://sunyue-img.todoingnow.com/css/style.css" rel="stylesheet">-->
+</head>
+<body>
+<div class="top-menu">
+    <img src="back.png" width="3%" class="left" onclick="closeDetail()">
+    <img src="share.png" width="5%" class="right">
+</div>
+<!--<div class="app-popup building">-->
+<!--<div id="housePicsA"></div>-->
+<!--</div>-->
+
+<div class="details">
+    <div class="nav"></div>
+    <div class="pic360">
+        <div id="productPic"></div>
+    </div>
+    <div class="summary">
+        <div>灯具</div>
+        <br/>
+        <div class="list-price">￥<span>4180</span></div>
+    </div>
+    <div class="info">
+        <p>商品名称：锌合金吊灯客厅灯欧式灯具卧室灯玉</p>
+        <p>商品编号：10763914141</p>
+        <p>毛重：7.0kg</p>
+        <p>商品产地：中国大陆</p>
+        <p>货号：ZSG05064M</p>
+        <p>材质：水晶</p>
+        <p>风格：后现代奢华</p>
+    </div>
+</div>
+
+<div class="bottom-menu">
+    <div class="menu-col-2">
+        <div class="contact">
+            <div class="menu-icon"><img src="call.png" width="20%"></div>
+            联系卖家
+        </div>
+        <div class="other">
+            <div class="menu-icon"><img src="fav.png" width="25%"></div>
+            收藏
+        </div>
+        <div class="other">
+            <div class="menu-icon"><img src="shop.png" width="30%"></div>
+            店铺
+        </div>
+    </div>
+    <div class="menu-col-2 add-cart"><img src="cart.png" width="7%" class="menu-icon-left">加入购物车</div>
+</div>
+</body>
+<script>
+    function run360(o) {
+        this.init(o);
+        var t = this;
+    }
+    run360.prototype.run = function (r) {
+        var o = this.data;
+        if (!this.mulit) {
+            if (r == "right") {
+                o.current++;
+                if (o.current > o.count) {
+                    o.current = 1;
+                }
+                o.el.setAttribute("class", o.name + " angle-" + o.angle + " position-" + o.current);
+            } else if (r == 'left') {
+                o.current--;
+                if (o.current < 1) {
+                    o.current = o.count;
+                }
+                o.el.setAttribute("class", o.name + " angle-" + o.angle + " position-" + o.current);
+            } else {
+                o.el.setAttribute("class", o.name + " angle-" + o.angle + " position-" + o.current);
+            }
+        }
+    }
+    run360.prototype.init = function (o) {
+        var th = this;
+        th.data = o;
+        th.data.maxAngle = o.angle;
+        th.data.angle = Math.ceil(th.data.maxAngle / 2);
+        th.set(o.width, o.height, o.scale);
+        th.run();
+        th.data.scaleEnd = o.scale;
+    }
+    run360.prototype.gestureStart = function (e, th) {
+        clearTimeout(th.timeout2);
+        th.mulit = true;
+    }
+    run360.prototype.gestureChange = function (e, th) {
+        th = th.data;
+
+        th.scale = e.scale - 1 + th.scaleEnd;
+        if (th.scale < th.scaleRange[0]) {
+            th.scale = th.scaleRange[0];
+        } else if (th.scale > th.scaleRange[1]) {
+            th.scale = th.scaleRange[1];
+        }
+
+        th.el.setAttribute('style', 'width:' + th.width + 'px;height:' + th.height + 'px;-webkit-transform:scale(' + th.scale + ') translate(-50%,-50%)');
+    }
+    run360.prototype.gestureEnd = function (e, th) {
+        th.data.scaleEnd = th.data.scale;
+        clearTimeout(th.timeout2);
+        th.timeout2 = setTimeout(function () {
+            th.mulit = false;
+        }, 100);
+        th.afterMulit = true;
+    }
+    run360.prototype.moveStart = function (e, th) {
+
+        th.pinchEl.on('panmove', function (e) {
+            th.move(e, th);
+        });
+        th.pinchEl.on('panend', function (e) {
+            th.moveEnd(e, th);
+        });
+
+        clearTimeout(th.timeout3);
+        th.startX = e.pointers[0].pageX;
+        th.startY = e.pointers[0].pageY;
+        th._startX = th.startX;
+        th.startTime = new Date().getTime();
+        e.preventDefault();
+        th.afterMulit = false;
+    }
+    run360.prototype.move = function (e, th) {
+
+        var x = e.pointers[0].pageX;
+        var y = e.pointers[0].pageY;
+        var yy = th.startY - y;
+        var xx = th.startX - x;
+
+        if (xx > 25) {
+            th.startX = x;
+            th.run('right');
+        } else if (xx < -25) {
+            th.startX = x;
+            th.run('left');
+        }
+        if (yy > 25) {
+            th.startY = y;
+            if (th.data.angle > 1) {
+                th.data.angle--;
+                th.run();
+            }
+        } else if (yy < -25) {
+            th.startY = y;
+            if (th.data.angle < th.data.maxAngle) {
+                th.data.angle++;
+                th.run();
+            }
+        }
+    }
+    run360.prototype.moveEnd = function (e, th) {
+
+        th.pinchEl.off('panmove');
+        th.pinchEl.off('panend');
+
+        var x = e.pointers[0].pageX;
+        var y = e.pointers[0].pageY;
+
+        th.startY = y;
+        th.startX = x;
+
+        var t = new Date().getTime() - th.startTime;
+        if (th._startX < x) {
+            th.direction = "left";
+        } else {
+            th.direction = "right";
+        }
+        var distance = Math.abs(th._startX - x);
+        clearTimeout(th.timeout3);
+
+        if (t < 250 && distance > 50) {
+            th.ani(distance / t);
+        }
+    }
+    run360.prototype.ani = function (speed) {
+        if (speed < 1) {
+            speed = 1;
+        }
+        var th = this;
+        if (!th.afterMulit) {
+            clearTimeout(th.timeout);
+            if (speed < 100) {
+                th.timeout = setTimeout(function () {
+                    th.ani(speed * 2);
+                    th.run(th.direction);
+                }, speed);
+            } else {
+                th.moveType = undefined;
+            }
+        } else {
+            th.moveType = undefined;
+        }
+    }
+    run360.prototype.set = function (w, h, s) {
+//        s = 414 / 600;
+        var style = "width:" + w + "px; height:" + h + "px; -webkit-transform: scale(" + s + "," + s + ") translate(-50%,-50%);";
+//        var style = "-webkit-transform: scale(" + s + "," + s + ") translate(-50%,-50%);";
+
+        this.data.el.setAttribute('style', style);
+//        console.log(600 * s)
+        this.data.el.parentNode.style.height = (600 * s) + 'px';
+        var top = (600 * s) / 2;
+        this.data.el.style.top = top + 'px';
+    }
+    run360.prototype.play = function () {
+        var th = this;
+        th.pause();
+
+        clearTimeout(th.__timer);
+        th.__timer = setTimeout(function () {
+
+            th.pinchEl = new Hammer(document.body);
+            th.pinchEl.parent = th;
+            th.pinchEl.get('pinch').set({enable: true});
+            th.pinchEl.off('panstart panmove panend gesturestart gesturemove gestureend');
+
+            th.pinchEl.on('panstart', function (e) {
+                th.moveStart(e, th);
+            });
+            th.pinchEl.on('pinchstart', function (e) {
+                th.gestureStart(e, th);
+            });
+            th.pinchEl.on('pinchmove', function (e) {
+                th.gestureChange(e, th);
+            });
+            th.pinchEl.on('pinchend', function (e) {
+                th.gestureEnd(e, th);
+            });
+
+        }, 100);
+    }
+    run360.prototype.destroy = run360.prototype.pause = function () {
+        var th = this;
+
+        clearTimeout(th.__timer);
+        clearTimeout(th.timeout);
+        clearTimeout(th.timeout2);
+        clearTimeout(th.timeout3);
+
+        if (th.pinchEl) {
+            th.pinchEl.off('panstart panmove panend gesturestart gesturemove gestureend');
+        }
+
+    }
+
+    var r = new run360({
+        el: document.getElementById('productPic'),
+        width: 600,
+        height: 600,
+        name: "p1", // 图片名
+        count: 12, // 图片总数
+        current: 1, // 当前图片位置
+        scale: 0.7, // 缩放
+        scaleRange: [0.5, 1.8],
+        angle: 1 // 总共视角
+    });
+    r.play();
+
+    function closeDetail() {
+//        console.log(window.parent);
+        var child = window.parent.document.getElementById("detailPage");
+        window.parent.document.body.removeChild(child);
+    }
+</script>
+</html>

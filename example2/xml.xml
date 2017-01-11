@@ -1,17 +1,50 @@
 ﻿<krpano>
 	
 	<!--基础功能-->
-	<include url="../../src/base.xml" />
+	<include url="../src/base.xml" />
+
+	<sound url="./sound.mp3" autoplay="false" />
+
+	<!--mall-->
+	<include url="../src/plugins/mall.xml" />
+	<mall>
+		<tag name="t1" atscene="keting" atv="10" ath="240" product="p2|p1" />
+		<tag name="t2" atscene="keting" atv="50" ath="90" product="p3|p4|p5" />
+
+		<product name="p1"
+			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯1"
+			thumb="products/1.jpg"
+			price="4180"
+			callback="alert(1)" />
+		<product name="p2"
+			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯2"
+			thumb="products/2.jpg"
+			price="4180"
+			callback="alert(2)" />
+		<product name="p3"
+			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯3"
+			thumb="products/3.jpg"
+			price="4180"
+			callback="alert(3)" />
+		<product name="p4"
+			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯3"
+			thumb="products/4.jpg"
+			price="4180"
+			callback="alert(4)" />
+		<product name="p5"
+			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯3"
+			thumb="products/5.jpg"
+			price="4180"
+			callback="alert(4)" />
+	</mall>
 
 	
 
 	<config name="config"
 		gravity="true"
 		vr="true"
-		bgsound="./sound.mp3"
-		bgsoundplay="false"
 		y="10"
-		entry="shufang" />
+		entry="keting" />
 
 
 	<sandmap name="sandmap"
@@ -45,46 +78,6 @@
 			<cube url="keting/mobile_%s.jpg" />
 		</image>
 	</scene>
-
-	
-
-	<!--mall-->
-	<include url="../../src/plugins/mall.xml" />
-
-	<mall>
-		<tag name="t1" atscene="keting" atv="5" ath="108" product="p1|p2" />
-		<tag name="t2" atscene="keting" atv="50" ath="90" product="p3|p4|p5" />
-		<product name="p1"
-			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯1"
-			thumb="products/1.jpg"
-			price="4180"
-			link="http://www.baidu.com"
-			callback="alert(1)" />
-		<product name="p2"
-			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯2"
-			thumb="products/2.jpg"
-			price="4180"
-			link="http://www.baidu.com"
-			callback="alert(2)" />
-		<product name="p3"
-			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯3"
-			thumb="products/3.jpg"
-			price="4180"
-			link="http://www.baidu.com"
-			callback="alert(3)" />
-		<product name="p4"
-			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯3"
-			thumb="products/4.jpg"
-			price="4180"
-			link="http://www.baidu.com"
-			callback="alert(4)" />
-		<product name="p5"
-			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯3"
-			thumb="products/5.jpg"
-			price="4180"
-			link="http://www.baidu.com"
-			callback="alert(4)" />
-	</mall>
 
 
 </krpano>

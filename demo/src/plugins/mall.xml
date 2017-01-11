@@ -1,0 +1,280 @@
+<krpano>
+
+	<events name="@mall_event" keep="true"
+		onnewscene="@mall_init"
+		onmousedown="@mall_mouse_down" />
+
+	<action name="@mall_mouse_down">
+		@mall_product_destroy();
+		js(console.log(get(view.hlookat)));
+		js(console.log(get(view.vlookat)));
+	</action>
+
+	<action name="@mall_init">
+		@mall_product_destroy();
+		@mall_product_tag_destroy();
+		stopdelayedcall(mall_init_delay);
+		delayedcall(
+			mall_init_delay,
+			2,
+			if (
+				mall[0] !== null AND mall[0].tag !== null,
+				set(_index, 0);
+				for (
+					set(i, 0), i LT mall[0].tag.count, inc(i),
+					if (
+						mall[0].tag[get(i)].atscene === current_scene,
+						@mall_tag_creator(mall[0].tag[get(i)], i, _index);
+						inc(_index);
+					);
+				);
+				set(layer[@mall_panel].enabled, false);
+			);
+		);
+	</action>
+
+	<!--清除所有所有产品-->
+	<action name="@mall_product_destroy">
+		for (
+			set(j, calc(layer.count - 1)), j GE 0, dec(j),
+			if (
+				layer[get(j)].role === 'product',
+				removelayer(get(layer[get(j)].name), true);
+			);
+		);
+		set(layer[@mall_panel].enabled, false);
+	</action>
+
+	<!--清除所有所有箭头-->
+	<action name="@mall_product_tag_destroy">
+		for (
+			set(j, calc(hotspot.count - 1)), j GE 0, dec(j),
+			if (
+				hotspot[get(j)].role === 'product',
+				removehotspot(get(hotspot[get(j)].name));
+			);
+		);
+	</action>
+
+	<!--创建产品剪头-->
+	<action name="@mall_tag_creator">
+		txtadd(mall_hotspot, '@mall_hotspot_', get(%2));
+		addhotspot(get(mall_hotspot));
+		set(hotspot[get(mall_hotspot)].atv, get(%1.atv));
+		set(hotspot[get(mall_hotspot)].ath, get(%1.ath));
+		set(hotspot[get(mall_hotspot)].value, get(%1.product));
+		set(hotspot[get(mall_hotspot)].index, get(%3));
+		set(hotspot[get(mall_hotspot)].id, get(%2));
+		hotspot[get(mall_hotspot)].loadstyle(@mall_product_tag);
+		tween(hotspot[get(mall_hotspot)].alpha, 1);
+	</action>
+
+	<!--创建产品的箭头和产品-->
+	<action name="@mall_product_creator">
+		<!--设置产品板块-->
+		txtadd(mall_panel_item, '@mall_panel_item_', %2);
+		addlayer(get(mall_panel_item));
+		set(layer[get(mall_panel_item)].parent, @mall_panel_scroller);
+		set(layer[get(mall_panel_item)].x, calc(310 * %2 + 10));
+		layer[get(mall_panel_item)].loadstyle(@mall_panel_item);
+
+		<!--点击区域-->
+		txtadd(mall_panel_item_clicker, '@mall_panel_item_clicker_', %2);
+		addlayer(get(mall_panel_item_clicker));
+		set(layer[get(mall_panel_item_clicker)].link, get(%1.link));
+		set(layer[get(mall_panel_item_clicker)].callback, get(%1.callback));
+		set(layer[get(mall_panel_item_clicker)].parent, get(mall_panel_item));
+		layer[get(mall_panel_item_clicker)].loadstyle(@mall_panel_item_clicker);
+
+		<!--缩略图容器-->
+		txtadd(mall_panel_item_thumb, '@mall_panel_item_thumb_', %2);
+		addlayer(get(mall_panel_item_thumb));
+		set(layer[get(mall_panel_item_thumb)].parent, get(mall_panel_item));
+		layer[get(mall_panel_item_thumb)].loadstyle(@mall_panel_item_thumb);
+
+		<!--缩略图图片-->
+		txtadd(mall_panel_item_thumbpic, '@mall_panel_item_thumbpic_', %2);
+		addlayer(get(mall_panel_item_thumbpic));
+		set(layer[get(mall_panel_item_thumbpic)].parent, get(mall_panel_item_thumb));
+		set(layer[get(mall_panel_item_thumbpic)].url, get(%1.thumb));
+		set(layer[get(mall_panel_item_thumbpic)].width, 100%);
+		set(layer[get(mall_panel_item_thumbpic)].height, 100%);
+		set(layer[get(mall_panel_item_thumbpic)].role, 'product');
+
+		<!--文字标题-->
+		txtadd(mall_panel_item_title, '@mall_panel_item_title_', %2);
+		addlayer(get(mall_panel_item_title));
+		set(layer[get(mall_panel_item_title)].parent, get(mall_panel_item));
+		set(layer[get(mall_panel_item_title)].html, get(%1.title));
+		layer[get(mall_panel_item_title)].loadstyle(@mall_panel_item_title);
+
+		<!--商品价格-->
+		txtadd(mall_panel_item_price, '@mall_panel_item_price_', %2);
+		addlayer(get(mall_panel_item_price));
+		set(layer[get(mall_panel_item_price)].parent, get(mall_panel_item));
+		set(layer[get(mall_panel_item_price)].y, 50);
+		set(layer[get(mall_panel_item_price)].html, get(%1.price));
+		layer[get(mall_panel_item_price)].loadstyle(@mall_panel_item_price);
+
+		<!--¥符号-->
+		txtadd(mall_panel_item_price_rmb, '@mall_panel_item_price_rmb_', %2);
+		addlayer(get(mall_panel_item_price_rmb));
+		set(layer[get(mall_panel_item_price_rmb)].parent, get(mall_panel_item));
+		set(layer[get(mall_panel_item_price_rmb)].y, 53);
+		layer[get(mall_panel_item_price_rmb)].loadstyle(@mall_panel_item_price_rmb);
+
+		<!--设置滚动区的宽度-->
+		set(layer[@mall_panel_scroller].width, calc(310 * (%2 + 1) + 10));
+
+		<!--设置滚动位置-->
+		layer[@mall_panel_scroller].setcenter(0, 0);
+
+		<!--滚动区域可用-->
+		set(layer[@mall_panel].enabled, true);
+	</action>
+
+	<!--产品模块样式-->
+	<style name="@mall_panel_item"
+		width="300"
+		height="120"
+		type="container"
+		role="product"
+		y="0"
+		bgcolor="0xffffff"
+		bgalpha="1"
+		bgroundedge="4" />
+
+	<!--点击区域-->
+	<style name="@mall_panel_item_clicker"
+		width="100%"
+		height="100%"
+		type="button"
+		role="product"
+		url="../images/space.png"
+		zorder="9"
+		onclick="@mall_panel_item_click" />
+
+	<!--产品模块缩略图样式(容器)-->
+	<style name="@mall_panel_item_thumb"
+		width="100"
+		height="100"
+		x="10"
+		y="10"
+		maskchildren="true"
+		type="container"
+		role="product"
+		bgcolor="0xeaeaea"
+		bgalpha="1"
+		bgroundedge="2" />
+
+	<!--产品模块标题-->
+	<style name="@mall_panel_item_title"
+		url="textfield.swf"
+	    backgroundalpha="0"
+	    role="product"
+	    x="120"
+	    y="10"
+	    width="170"
+	    height="40"
+		css="font-size:15px;color:#444;line-height:20px" />
+
+	<!--产品模块价钱-->
+	<style name="@mall_panel_item_price"
+		url="textfield.swf"
+	    backgroundalpha="0"
+	    role="product"
+	    x="131"
+	    width="170"
+		css="font-size:18px;color:#444;line-height:1.2" />
+
+	<!--¥符号-->
+	<style name="@mall_panel_item_price_rmb"
+		url="textfield.swf"
+	    backgroundalpha="0"
+	    role="product"
+	    html="¥"
+	    x="120"
+	    width="170"
+		css="font-size:14px;color:#444;line-height:1.2" />
+
+	<!--产品箭头样式-->
+	<style name="@mall_product_tag"
+		type="image"
+		role="product"
+		url="../images/arrow-product.png"
+		width="60"
+		height="60"
+		zoom="false"
+		enable="false"
+		alpha="0"
+		scale="1"
+		onloaded="@mall_product_tag_animate"
+		onclick="@mall_product_tag_click" />
+
+	<!--产品箭头的动画-->
+	<action name="@mall_product_tag_animate">
+		tween(scale, 1.1, 0.5, easeInCubic,
+			tween(scale, 1, 0.5, easeOutCubic, @mall_product_tag_animate);
+		);
+	</action>
+
+	<!--产品箭头的点击-->
+	<action name="@mall_product_tag_click">
+		looktohotspot(get(name), get(view.fov));
+		@mall_product_destroy();
+		if (
+			value === 'p1|p2',
+
+			@mall_product_creator(mall[0].product[p1], 0);
+			@mall_product_creator(mall[0].product[p2], 1);,
+
+			@mall_product_creator(mall[0].product[p3], 0);
+			@mall_product_creator(mall[0].product[p4], 1);
+			@mall_product_creator(mall[0].product[p5], 2);
+		);
+	</action>
+
+	<!--产品的点击-->
+	<action name="@mall_panel_item_click">
+		if (
+			callback !== null,
+			js(get(callback));
+		)
+		if (
+			link !== null AND callback === null,
+			openurl(get(link), _self);
+		);
+	</action>
+
+	<!--商品列表样式-->
+	<style name="@mall_panel"
+		keep="true"
+		width="100%"
+		height="140"
+		x="0"
+		y="0"
+		enabled="false"
+		bgalpha="0"
+		align="bottom"
+		bgcolor="0x000000"
+		type="container"
+		zorder="9" />
+
+	<!--商品列表滚动区样式-->
+	<style name="@mall_panel_scroller"
+		url="scrollarea.js"
+		keep="true"
+		direction="h"
+		width="100%"
+		height="120"
+		align="left"
+		friction="0.8"
+		onloaded="setcenter(0,0);" />
+
+	<!--列表-->
+	<layer name="@mall_panel" style="@mall_panel">
+		<layer name="@mall_panel_scroller" style="@mall_panel_scroller">
+		</layer>
+	</layer>
+
+</krpano>
