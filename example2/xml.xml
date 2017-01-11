@@ -3,56 +3,7 @@
 	<!--基础功能-->
 	<include url="../../src/base.xml" />
 
-	<!--mall-->
-	<include url="../../src/plugins/mall.xml" />
-
-	<mall>
-		<product name="p1"
-			atscene="keting"
-			ath="0"
-			atv="0"
-			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯1"
-			thumb="products/1.jpg"
-			price="4180"
-			link="http://www.baidu.com"
-			callback="alert(1)" />
-		<product name="p2"
-			atscene="keting"
-			ath="12.878134636095"
-			atv="10.3502532533291"
-			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯2"
-			thumb="products/2.jpg"
-			price="4180"
-			link="http://www.baidu.com"
-			callback="alert(2)" />
-		<product name="p3"
-			atscene="keting"
-			ath="90"
-			atv="60"
-			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯3"
-			thumb="products/3.jpg"
-			price="4180"
-			link="http://www.baidu.com"
-			callback="alert(3)" />
-		<product name="p4"
-			atscene="keting"
-			ath="-30"
-			atv="20"
-			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯3"
-			thumb="products/4.jpg"
-			price="4180"
-			link="http://www.baidu.com"
-			callback="alert(4)" />
-		<product name="p5"
-			atscene="keting"
-			ath="-44.878134636095"
-			atv="30.3502532533291"
-			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯3"
-			thumb="products/5.jpg"
-			price="4180"
-			link="http://www.baidu.com"
-			callback="alert(4)" />
-	</mall>
+	
 
 	<config name="config"
 		gravity="true"
@@ -60,7 +11,7 @@
 		bgsound="./sound.mp3"
 		bgsoundplay="false"
 		y="10"
-		entry="keting" />
+		entry="shufang" />
 
 
 	<sandmap name="sandmap"
@@ -70,7 +21,15 @@
 		height="180" />
 
 
-	<scene name="shufang" title="书房" pointx="55" pointy="125" direction="180" thumburl="shufang/thumb.jpg">
+	<scene name="shufang" title="书房" pointx="155" pointy="42" direction="90" thumburl="shufang/thumb.jpg">
+
+		<hotspot style="hotspot"
+			direction="left"
+			ath="180"
+			atv="0"
+			link="keting"
+			title="客厅" />
+
 		<view hlookat="20" fovmin="60" fov="95" fovmax="120" />
 		<preview url="shufang/preview.jpg" />
 		<image>
@@ -88,6 +47,44 @@
 	</scene>
 
 	
+
+	<!--mall-->
+	<include url="../../src/plugins/mall.xml" />
+
+	<mall>
+		<tag name="t1" atscene="keting" atv="5" ath="108" product="p1|p2" />
+		<tag name="t2" atscene="keting" atv="50" ath="90" product="p3|p4|p5" />
+		<product name="p1"
+			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯1"
+			thumb="products/1.jpg"
+			price="4180"
+			link="http://www.baidu.com"
+			callback="alert(1)" />
+		<product name="p2"
+			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯2"
+			thumb="products/2.jpg"
+			price="4180"
+			link="http://www.baidu.com"
+			callback="alert(2)" />
+		<product name="p3"
+			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯3"
+			thumb="products/3.jpg"
+			price="4180"
+			link="http://www.baidu.com"
+			callback="alert(3)" />
+		<product name="p4"
+			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯3"
+			thumb="products/4.jpg"
+			price="4180"
+			link="http://www.baidu.com"
+			callback="alert(4)" />
+		<product name="p5"
+			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯3"
+			thumb="products/5.jpg"
+			price="4180"
+			link="http://www.baidu.com"
+			callback="alert(4)" />
+	</mall>
 
 
 </krpano>

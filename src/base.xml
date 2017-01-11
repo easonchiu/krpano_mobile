@@ -277,6 +277,7 @@
 		width="100%"
 		alpha="0"
 		y="100"
+		enabled="false"
 		css="color:#ffffff;font-size:26px;padding:12px;text-shadow:0 1px 4px rgba(0,0,0,0.3);text-align:center;" />
 
 	<!--沙盘添加点-->
