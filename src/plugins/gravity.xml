@@ -1,0 +1,60 @@
+<krpano>
+
+	<action name="@gravity.init">
+    	set(layer[@gravity].x, %1);
+    	set(layer[@gravity].y, %2);
+    	set(layer[@gravity].visible, true);
+    	tween(layer[@gravity].alpha, 1);
+    </action>
+
+	<action name="@gravity_init" autorun="onstart">
+		if (
+			gravity[0].x !== null
+			AND gravity[0].x !== null,
+
+			layer[@gravity].changeorigin();
+			def($gravity_is_running, boolean, true);,
+
+			removelayer(@gravity);
+		);
+	</action>
+
+
+	<!--重力感应插件-->
+	<plugin name="@gravity_gyro" devices="html5"
+        url="com/gyro.js"
+        enabled="true"
+        preload="true"
+        keep="true" />
+
+	<style name="@gravity"
+		visible="false"
+		alpha="0"
+		keep="true"
+		width="45"
+		height="45"
+		crop="0|0|100|100"
+		url="../images/gravity.png"
+		align="righttop"
+		toggle="false"
+		zorder="2"
+		onclick="@gravity_toggle" />
+
+	<layer name="@gravity" style="@gravity" />
+
+	<!--重力感应切换-->
+	<action name="@gravity_toggle">
+		if (
+			$gravity_is_running,
+			set(crop, '0|100|100|100');
+			set(plugin[gyro].enabled, false);
+			@toast.show('重力感应关闭', 1.5);
+			def($gravity_is_running, boolean, false);,
+			set(crop, '0|0|100|100');
+			set(plugin[gyro].enabled, true);
+			@toast.show('重力感应开启', 1.5);
+			def($gravity_is_running, boolean, true);
+		);
+	</action>
+
+</krpano>

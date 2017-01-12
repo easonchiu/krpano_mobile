@@ -1,7 +1,191 @@
 <krpano>
 
+	<events name="@sandmap_event"
+		keep="true"
+		onxmlcomplete="@sandmap_ready"
+		onviewchange="@sandmap_update" />
+
+	<action name="@sandmap.init">
+    	set(layer[@sandmap].x, %1);
+    	set(layer[@sandmap].y, %2);
+    	set(layer[@sandmap].visible, true);
+    	tween(layer[@sandmap].alpha, 1);
+    </action>
+
 	<action name="@sandmap_init" autorun="onstart">
-		
+		if (
+			sandmap[0].mapx === null,
+			set(sandmap[0].mapx, 55);
+		);
+
+		if (
+			sandmap[0].mapy === null,
+			set(sandmap[0].mapy, 10);
+		);
+
+		if (
+			sandmap[0].map !== null
+			AND sandmap[0].width !== null
+			AND sandmap[0].height !== null
+			AND sandmap[0].point.count GT 0,
+
+			set(layer[@sandmap_bg].url, get(sandmap[0].map));
+			set(layer[@sandmap_bg].width, get(sandmap[0].width));
+			set(layer[@sandmap_bg].height, get(sandmap[0].height));
+
+			set(layer[@sandmap_map].width, get(sandmap[0].width));
+			set(layer[@sandmap_map].height, get(sandmap[0].height));
+
+			set(layer[@sandmap_map].x, calc(sandmap[0].mapx - 70));
+			set(layer[@sandmap_map].y, get(sandmap[0].mapy));
+
+			nexttick(
+				for (
+					set($sandmap_i, 0), $sandmap_i LT sandmap[0].point.count, inc($sandmap_i),
+					@sandmap_point_creator(sandmap[0].point[get($sandmap_i)].x, sandmap[0].point[get($sandmap_i)].y, sandmap[0].point[get($sandmap_i)].name);
+				);
+				def($sandmap_has_init, boolean, true);
+				def($sandmap_is_show, boolean, false);
+			);
+			,
+			removelayer(@sandmap, true);
+			removelayer(@sandmap_map, true);
+			removelayer(@sandmap_bg, true);
+			removelayer(@sandmap_range, true);
+		);
+	</action>
+
+	<action name="@sandmap_ready">
+		if (
+			$sandmap_has_init,
+
+			<!--关闭菜单-->
+			if (
+				$sandmap_is_show,
+				@sandmap_toggle();
+			);
+
+			<!--设置当前点-->
+			for (
+				set($sandmap_i, 0), $sandmap_i LT sandmap[0].point.count, inc($sandmap_i),
+				txtadd($sandmap_point, '@sandmap_point_', get(sandmap[0].point[get($sandmap_i)].name));
+				if (
+					sandmap[0].point[get($sandmap_i)].name === $global.current_scene,
+
+					set(layer[@sandmap_range].x, calc(layer[get($sandmap_point)].x + 10));
+					set(layer[@sandmap_range].y, calc(layer[get($sandmap_point)].y + 10));
+					set(layer[get($sandmap_point)].crop, '0|40|40|40');,
+
+					set(layer[get($sandmap_point)].crop, '0|0|40|40');
+				);
+			);
+		);
+	</action>
+
+
+	<style name="@sandmap"
+		alpha="0"
+		visible="false"
+		keep="true"
+		width="45"
+		height="45"
+		crop="0|0|100|100"
+		url="../images/switch-sandmap.png"
+		align="righttop"
+		zorder="2"
+		onclick="@sandmap_toggle" />
+
+	<layer name="@sandmap" style="@sandmap" />
+
+	<!--沙盘旋转容器样式-->
+	<style name="@sandmap_range"
+		keep="true"
+		width="100"
+		height="100"
+		edge="center"
+		url="../images/range-sandmap.png"
+		crop="0|0|200|200"
+		parent="layer[@sandmap_map]"
+		handcursor="false"
+		enabled="false"
+		rotate="90.0"
+		zorder="2" />
+
+	<!--沙盘点的样式-->
+	<style name="$sandmap_point"
+		type="button"
+		visible="true"
+		width="20"
+		height="20"
+		keep="true"
+		url="../images/point-sandmap.png"
+		parent="layer[@sandmap_map]"
+		onclick="@sandmap_point_click"
+		crop="0|0|40|40"
+		zorder="3" />
+
+	<!--沙盘-->
+	<layer name="@sandmap_map" alpha="0" enabled="false" type="container" keep="true" align="righttop" zorder="8">
+		<layer name="@sandmap_bg" keep="true" handcursor="false" zorder="1" />
+		<layer name="@sandmap_range" style="@sandmap_range" />
+	</layer>
+
+	<!--打开或关闭动作-->
+	<action name="@sandmap_toggle">
+		if (
+			$sandmap_is_show,
+
+			set(layer[@sandmap].crop, '0|0|100|100');
+			set(layer[@sandmap_map].enabled, false);
+			tween(layer[@sandmap_map].alpha, 0 ,0.3);
+			tween(layer[@sandmap_map].x, calc(sandmap[0].mapx - 70), 0.3, easeInBack);
+			def($sandmap_is_show, boolean, false);,
+
+			set(layer[@sandmap].crop, '0|100|100|100');
+			set(layer[@sandmap_map].enabled, true);
+			tween(layer[@sandmap_map].alpha, 1 ,0.3);
+			tween(layer[@sandmap_map].x, get(sandmap[0].mapx), 0.3, easeOutBack);
+			def($sandmap_is_show, boolean, true);
+		);
+	</action>
+
+	<!--沙盘添加点-->
+	<action name="@sandmap_point_creator">
+		if (
+			%1 !== null
+			AND %2 !== null,
+			txtadd($sandmap_point, '@sandmap_point_', get(%3));
+			addlayer(get($sandmap_point));
+			set(layer[get($sandmap_point)].x, calc(%1 - 10));
+			set(layer[get($sandmap_point)].y, calc(%2 - 10));
+			set(layer[get($sandmap_point)].link, get(%3));
+			layer[get($sandmap_point)].loadstyle($sandmap_point);
+			if (
+				$global.current_scene == %3,
+				set(layer[@sandmap_range].x, calc(%1));
+				set(layer[@sandmap_range].y, calc(%2));
+				set(layer[get($sandmap_point)].crop, '0|40|40|40');
+			);
+		);
+	</action>
+
+	<!-- 更新旋转数值 -->
+	<action name="@sandmap_update">
+		if (
+			$sandmap_has_init,
+			if (
+				sandmap[0].point[get($global.current_scene)].direction !== null,
+				set($sandmap_direction, get(sandmap[0].point[get($global.current_scene)].direction));,
+				set($sandmap_direction, 0);
+			);
+			mod($@sandmap_range_rotate, calc(view.hlookat + $sandmap_direction), 360);
+			set(layer[@sandmap_range].rotate, get($@sandmap_range_rotate));
+		);
+	</action>
+
+	<!--地图上的点点击事件-->
+	<action name="@sandmap_point_click">
+		transform_scene();
 	</action>
 
 </krpano>

@@ -1,34 +1,31 @@
 <krpano>
 	
-	<!--vr插件-->
-	<include url="plugins/webvr.xml" />
-
-	<!--重力感应插件-->
-	<plugin name="gyro" devices="html5"
-        url="plugins/gyro.js"
-        enabled="true"
-        preload="true"
-        keep="true" />
+	<!--提示框-->
+	<include url="plugins/toast.xml" />
 
 	<!--背景音乐-->
 	<include url="plugins/sound.xml" />
 
-    <!--自动旋转-->
-    <autorotate enabled="true"
-		waittime="5.0"
-		speed="5.0"
-		horizon="0.0" />
+	<!--重力感应-->
+	<include url="plugins/gravity.xml" />
 
-	<!--提示框-->
-	<include url="plugins/toast.xml" />
+	<!--vr-->
+	<include url="plugins/vr.xml" />
 
 	<!--沙盘插件-->
 	<include url="plugins/sandmap.xml" />
+
+    <!--自动旋转-->
+    <autorotate enabled="true" waittime="5.0" speed="5.0" horizon="0.0" />
+
+	
 	
 
 
     <!--初始化-->
     <action name="init_view">
+
+
     	if (
 			xml.view.vlookat === null,
 			set(xml.view.vlookat, 0);
@@ -45,14 +42,7 @@
 		<!--不可操控-->
 		set(control.usercontrol, off);
 
-		<!--将场景中的功能菜单都隐藏-->
-		set(layer[sandmap_switch].alpha, 0);
-		set(layer[sandmapbox].alpha, 0);
-		set(layer[vr].alpha, 0);
 
-
-
-		set(layer[gravity].alpha, 0);
 		set(layer[tab_switch].alpha, 0);
 		for (
 			set(i, 0), i LT hotspot.count, inc(i),
@@ -65,97 +55,44 @@
 		tween(view.hlookat, get(xml.view.hlookat), 2, easeOutQuad);
 		tween(view.vlookat, get(xml.view.vlookat), 2, easeOutQuad);
 		tween(view.fov, get(xml.view.fov), 2, easeOutQuad,
-			<!--功能菜单都显示出来-->
-			tween(layer[sandmap_switch].alpha, 1);
-			if (
-				sandmap[sandmap].visible === true,
-				tween(layer[sandmapbox].alpha, 1);
-			);
-			tween(layer[vr].alpha, 1);
+			
 
-			set(layer[@sound].visible, true);
-			tween(layer[@sound].alpha, 1);
 
-			tween(layer[gravity].alpha, 1);
+
+			@sound.init(get(sound[0].x), get(sound[0].y));
+			@sandmap.init(get(sandmap[0].x), get(sandmap[0].y));
+			@gravity.init(get(gravity[0].x), get(gravity[0].y));
+			@vr.init(get(vr[0].x), get(vr[0].y));
+
+
+
+
+
+
 			tween(layer[tab_switch].alpha, 0.75);
 
 			<!--用户可操控-->
 			set(control.usercontrol, all);
 		);
+
 	</action>
 
 	<action name="startup" autorun="onstart">
 		<!--加载首个场景-->
 		set(firstscene, true);
-		if(config[config].entry AND config[config].entry !== '', set(current_scene, get(config[config].entry)));
-		if(current_scene === null, set(current_scene, get(scene[0].name)));
-		loadscene(get(current_scene), null, MERGE, COLORBLEND(1, 0xffffff));
-		<!--配置-->
-		if (
-			config[config].x === null,
-			set(config[config].x, 10);
-		);
-		if (
-			config[config].y === null,
-			set(config[config].y, 10);
-		);
-		set(x, get(config[config].x));
-		set(y, get(config[config].y));
-		if (
-			sandmap[sandmap].bg
-			AND sandmap[sandmap].bg != ''
-			AND sandmap[sandmap].width
-			AND sandmap[sandmap].height,
-			def(has_sandmap, boolean, true);
-		);
-		if (
-			config[config].gravity,
-			set(layer[gravity].visible, true);
-			set(layer[gravity].x, get(x));
-			set(layer[gravity].y, get(y));
-			layer[gravity].changeorigin();
-			set(y, calc(y + layer[gravity].height + 10));,
-			set(plugin[gyro].enabled, false);
-		);
-		if (
-			config[config].vr,
-			set(layer[vr].visible, true);
-			set(layer[vr].x, get(x));
-			set(layer[vr].y, get(y));
-			set(y, calc(y + layer[vr].height + 10));
+
+		<!--配置全景入口-->
+		if(
+			entry[0] AND entry[0].scene !== '',
+			set($global.current_scene, get(entry[0].scene));,
+			set($global.current_scene, get(scene[0].name));
 		);
 
-		if (
-			layer[@sound],
-			set(layer[@sound].x, get(x));
-			set(layer[@sound].y, get(y));
-			set(y, calc(y + layer[@sound].height + 10));
-		);
+		<!--加载全景-->
+		loadscene(get($global.current_scene), null, MERGE, COLORBLEND(1, 0xffffff));
+
+
 		
-		if (
-			has_sandmap,
-			set(layer[sandmapbox].visible, true);
-			set(layer[sandmap].url, get(sandmap[sandmap].bg));
-			set(layer[sandmap].width, get(sandmap[sandmap].width));
-			set(layer[sandmapbox].width, get(sandmap[sandmap].width));
-			set(layer[sandmap].height, get(sandmap[sandmap].height));
-			set(layer[sandmapbox].height, get(sandmap[sandmap].height));
-			for (
-				set(i, 0), i LT scene.count, inc(i),
-				add_sandmap_point(scene[get(i)].pointx, scene[get(i)].pointy, scene[get(i)].name);
-			);
-			set(layer[sandmap_switch].visible, true);
-			set(layer[sandmap_switch].x, get(x));
-			set(layer[sandmap_switch].y, get(y));
-			if (
-				sandmap[sandmap].visible == false,
-				set(layer[sandmapbox].x, 0);
-				set(layer[sandmapbox].alpha, 0);
-				set(layer[sandmapbox].enabled, false);
-				set(layer[sandmap_switch].crop, '0|0|100|100');
-				set(layer[sandmap_switch].toggle, false);
-			);
-		);
 		if(
 			scene.count LT 2,
 			set(layer[tab_box].visible, false);
@@ -183,7 +120,7 @@
 					set(layer[get(thumb_title)].html, get(scene[get(i)].title));
 					layer[get(thumb_title)].loadstyle(scroll_item_title);
 					if (
-						scene[get(i)].name == current_scene,
+						scene[get(i)].name == $global.current_scene,
 						set(layer[get(thumb_item)].bgborder, '3 0xF6B64C');
 					);
 				);
@@ -197,14 +134,8 @@
 	<!--切换场景loading-->
 	<events name="on_new_scene" keep="true" onxmlcomplete="startloading();" onnewscene="endloading();" />
 	<action name="startloading">
-		show_tips('加载中');
-		if (
-			sandmap[sandmap].visible !== true,
-			set(toggle, true);
-			set(layer[sandmap_switch].toggle, false);
-			set(layer[sandmap_switch].crop, '0|0|100|100');
-			toggle_sandmap();
-		);
+		@toast.show('加载中');
+		
 		set(layer[scene_name_tips].alpha, 0);
 		stopdelayedcall(titledelay);
 		stopdelayedcall(titledelay2);
@@ -226,8 +157,8 @@
 			init_view();,
 		);
 		
-		hide_tips();
-		set(layer[scene_name_tips].html, get(scene[get(current_scene)].title));
+		@toast.hide();
+		set(layer[scene_name_tips].html, get(scene[get($global.current_scene)].title));
 
 		delayedcall(
 			titledelay,
@@ -259,150 +190,12 @@
 		enabled="false"
 		css="color:#ffffff;font-size:26px;padding:12px;text-shadow:0 1px 4px rgba(0,0,0,0.3);text-align:center;" />
 
-	<!--沙盘添加点-->
-	<action name="add_sandmap_point">
-		if (%1 !== null AND %2 !== null,
-			<!--添加点-->
-			txtadd(splname, 'sandmap_point_layer_', get(%3));
-			addlayer(get(splname));
-			set(layer[get(splname)].x, calc(%1 - 10));
-			set(layer[get(splname)].y, calc(%2 - 10));
-			set(layer[get(splname)].link, get(%3));
-			layer[get(splname)].loadstyle(sandmap_point_layer);
-			<!--针对当前点处理-->
-			if (
-				current_scene == %3,
-				set(layer[sandmap_range].x, calc(%1));
-				set(layer[sandmap_range].y, calc(%2));
-				set(layer[get(splname)].crop, '0|40|40|40');
-			);
-		);
-	</action>
+	
 
-	<!--沙盘点的样式-->
-	<style name="sandmap_point_layer"
-		type="button"
-		visible="true"
-		width="20"
-		height="20"
-		keep="true"
-		url="images/point-sandmap.png"
-		parent="layer[sandmapbox]"
-		onclick="transform_scene()"
-		crop="0|0|40|40"
-		zorder="3" />
-
-	<!--侦听视角转变事件-->
-	<events name="compass_events" keep="true" onviewchange="compass_update_rotate();" />
-
-	<!-- 更新旋转数值 -->
-	<action name="compass_update_rotate">
-		if (
-			has_sandmap,
-			set(hlookat_offset, 0);
-			if (
-				scene[get(current_scene)].direction !== null,
-				set(current_direction, get(scene[get(current_scene)].direction));,
-				set(current_direction, 0);
-			);
-			mod(val, calc(view.hlookat + current_direction), 360);
-			set(layer[sandmap_range].rotate, get(val));
-		);
-	</action>
-
-	<!--沙盘旋转容器样式-->
-	<style name="sandmap_range"
-		keep="true"
-		width="100"
-		height="100"
-		edge="center"
-		url="images/range-sandmap.png"
-		crop="0|0|200|200"
-		parent="layer[sandmapbox]"
-		handcursor="false"
-		enabled="false"
-		rotate="90.0"
-		zorder="2" />
-
-	<!--沙盘-->
-	<layer name="sandmapbox" type="container" visible="false" keep="true" align="righttop" y="10" x="60" zorder="8">
-		<layer name="sandmap" keep="true" handcursor="false" zorder="1" />
-		<layer name="sandmap_range" style="sandmap_range" />
-	</layer>
-
-	<!--重力感应切换-->
-	<action name="toggle_gravity">
-		def(t, boolean, get(toggle));
-		set(toggle, calc(!t));
-		if (
-			t,
-			set(crop, '0|0|100|100');
-			set(plugin[gyro].enabled, true);
-			show_tips('重力感应开启', 1.5);,
-			set(crop, '0|100|100|100');
-			set(plugin[gyro].enabled, false);
-			show_tips('重力感应关闭', 1.5);
-		);
-	</action>
-	<style name="gravity"
-		visible="false"
-		keep="true"
-		width="45"
-		height="45"
-		crop="0|0|100|100"
-		url="images/gravity.png"
-		align="righttop"
-		toggle="false"
-		zorder="2"
-		onclick="toggle_gravity()" />
-	<layer name="gravity" style="gravity" />
-
-	<!--VR切换-->
-	<action name="enter_vr">
-		plugin[WebVR].enterVR();
-	</action>
-	<style name="vr"
-		visible="false"
-		keep="true"
-		width="45"
-		height="45"
-		crop="0|0|100|100"
-		url="images/vr.png"
-		align="righttop"
-		toggle="true"
-		zorder="2"
-		onclick="enter_vr()" />
-	<layer name="vr" style="vr" />
+	
 
 
-	<!--沙盘开关-->
-	<action name="toggle_sandmap">
-		def(t, boolean, get(toggle));
-		set(toggle, calc(!t));
-		if (
-			t,
-			set(crop, '0|0|100|100');
-			set(layer[sandmapbox].enabled, false);
-			tween(layer[sandmapbox].alpha, 0 ,0.3);
-			tween(layer[sandmapbox].x, 0 , 0.3, 'easeInBack');,
-			set(crop, '0|100|100|100');
-			set(layer[sandmapbox].enabled, true);
-			tween(layer[sandmapbox].alpha, 1 ,0.3);
-			tween(layer[sandmapbox].x, 65 , 0.3, 'easeOutBack');
-		);
-	</action>
-	<style name="sandmap_switch"
-		visible="false"
-		keep="true"
-		width="45"
-		height="45"
-		crop="0|100|100|100"
-		url="images/switch-sandmap.png"
-		align="righttop"
-		toggle="true"
-		zorder="2"
-		onclick="toggle_sandmap()" />
-	<layer name="sandmap_switch" style="sandmap_switch" />
+
 
 	<!--场景快捷切换-->
 	<style name="tab_box"
@@ -417,7 +210,7 @@
 		type="container"
 		zorder="9" />
 	<style name="scroll_area"
-		url="plugins/scrollarea.js"
+		url="plugins/com/scrollarea.js"
 		keep="true"
 		direction="h"
 		width="100%"
@@ -473,28 +266,16 @@
 	<!--跳转场景-->
 	<action name="transform_scene">
 		if (
-			current_scene !== link,
-			set(current_scene, get(link));
-			if (
-				has_sandmap,
-				txtadd(current_sandmap_point_name, 'sandmap_point_layer_', get(link));
-				for (
-					set(i, 0), i LT scene.count, inc(i),
-					txtadd(sandmap_point_name, 'sandmap_point_layer_', get(scene[get(i)].name));
-					if (
-						sandmap_point_name == current_sandmap_point_name,
-						set(layer[get(sandmap_point_name)].crop, '0|40|40|40');
-						set(layer[sandmap_range].x, calc(layer[get(sandmap_point_name)].x + 10));
-						set(layer[sandmap_range].y, calc(layer[get(sandmap_point_name)].y + 10));,
-						set(layer[get(sandmap_point_name)].crop, '0|0|40|40');
-					);
-				);
-			);
+			$global.current_scene !== link,
+			set($global.current_scene, get(link));
+
+			
+
 			for (
 				set(i, 0), i LT scene.count, inc(i),
 				txtadd(thumb_item, 'thumb_item_', get(scene[get(i)].name));
 				if (
-					scene[get(i)].name == current_scene,
+					scene[get(i)].name == $global.current_scene,
 					set(layer[get(thumb_item)].bgborder, '3 0xF6B64C');,
 					set(layer[get(thumb_item)].bgborder, '3 0xFFFFFF');
 				);
@@ -516,7 +297,7 @@
 				wait(0.5);
 				tween(view.fov, 50, 2, easeOutCubic);
 			); -->
-			loadscene(get(current_scene), null, MERGE, BLEND(2, easeOutCubic));
+			loadscene(get($global.current_scene), null, MERGE, BLEND(2, easeOutCubic));
 			set(control.usercontrol, all);
 		);
 	</action>

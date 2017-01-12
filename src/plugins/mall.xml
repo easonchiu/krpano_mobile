@@ -22,7 +22,7 @@
 				for (
 					set($mall_i, 0), $mall_i LT mall[0].tag.count, inc($mall_i),
 					if (
-						mall[0].tag[get($mall_i)].atscene === current_scene,
+						mall[0].tag[get($mall_i)].atscene === $global.current_scene,
 						@mall_tag_creator(mall[0].tag[get($mall_i)], $mall_i);
 					);
 				);
@@ -277,7 +277,7 @@
 
 	<!--商品列表滚动区样式-->
 	<style name="@mall_panel_scroller"
-		url="scrollarea.js"
+		url="com/scrollarea.js"
 		keep="true"
 		direction="h"
 		width="100%"

@@ -3,58 +3,55 @@
 	<!--基础功能-->
 	<include url="../src/base.xml" />
 
-	<sound url="./sound.mp3" autoplay="false" />
+	<entry scene="keting" />
+
+	<sound x="10" y="10" url="./sound.mp3" autoplay="false" />
+
+	<gravity x="10" y="65" />
+
+	<vr x="10" y="120" />
+
+	<sandmap x="10" y="175" width="201" height="180" map="sandmap.png" mapx="55" mapy="10">
+		<point name="p1" x="155" y="42" direction="90" scene="shufang" />
+		<point name="p2" x="155" y="138" direction="-180" scene="keting" />
+	</sandmap>
+
 
 	<!--mall-->
 	<include url="../src/plugins/mall.xml" />
 	<mall>
 		<tag name="t1" atscene="keting" atv="10" ath="240" product="p2|p1" />
 		<tag name="t2" atscene="keting" atv="50" ath="90" product="p3|p4|p5" />
-
 		<product name="p1"
-			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯1"
+			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯"
 			thumb="products/1.jpg"
 			price="4180"
-			callback="alert(1)" />
+			callback="details.show(锌合金吊灯欧式卧室客厅灯玉石水晶灯, 4180, 1)" />
 		<product name="p2"
-			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯2"
+			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯"
 			thumb="products/2.jpg"
-			price="4180"
-			callback="alert(2)" />
+			price="3980"
+			callback="details.show(锌合金吊灯欧式卧室客厅灯玉石水晶灯, 3980, 3)" />
 		<product name="p3"
-			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯3"
+			title="新古典复古客厅转角贵妃布沙发"
 			thumb="products/3.jpg"
-			price="4180"
-			callback="alert(3)" />
+			price="5999"
+			callback="details.show(新古典复古客厅转角贵妃布沙发, 5999, 2)" />
 		<product name="p4"
-			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯3"
+			title="新古典复古客厅转角贵妃布沙发"
 			thumb="products/4.jpg"
 			price="4180"
-			callback="alert(4)" />
+			callback="details.show(新古典复古客厅转角贵妃布沙发, 4180, 4)" />
 		<product name="p5"
-			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯3"
+			title="新古典复古客厅转角贵妃布沙发"
 			thumb="products/5.jpg"
-			price="4180"
-			callback="alert(4)" />
+			price="6280"
+			callback="details.show(新古典复古客厅转角贵妃布沙发, 6280, 5)" />
 	</mall>
 
 	
 
-	<config name="config"
-		gravity="true"
-		vr="true"
-		y="10"
-		entry="keting" />
-
-
-	<sandmap name="sandmap"
-		visible="false"
-		bg="sandmap.png"
-		width="201"
-		height="180" />
-
-
-	<scene name="shufang" title="书房" pointx="155" pointy="42" direction="90" thumburl="shufang/thumb.jpg">
+	<scene name="shufang" title="书房" thumburl="shufang/thumb.jpg">
 
 		<hotspot style="hotspot"
 			direction="left"
@@ -71,7 +68,7 @@
 	</scene>
 
 
-	<scene name="keting" title="客厅" pointx="155" pointy="138" direction="-180" thumburl="keting/thumb.jpg">
+	<scene name="keting" title="客厅" thumburl="keting/thumb.jpg">
 		<view hlookat="90" fovmin="60" fov="95" fovmax="120" />
 		<preview url="keting/preview.jpg" />
 		<image>

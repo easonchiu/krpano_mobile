@@ -1,24 +1,24 @@
 ﻿<krpano>
 	
 	<!--基础功能-->
-	<include name="include" url="../../src/base.xml" />
+	<include url="../src/base.xml" />
 
-	<config name="config"
-		gravity="true"
-		vr="true"
-		bgsound="./sound.mp3"
-		bgsoundplay="false"
-		y="10"
-		entry="keting" />
+	<entry scene="woshi" />
 
-	<sandmap name="sandmap"
-		visible="false"
-		bg="sandmap.png"
-		width="200"
-		height="231" />
-	
+	<sound x="10" y="10" url="./sound.mp3" autoplay="true" />
 
-	<scene name="keting" title="客厅" pointx="45" pointy="140" direction="30" thumburl="keting/thumb.jpg">
+	<gravity x="10" y="65" />
+
+	<vr x="10" y="120" />
+
+	<sandmap x="10" y="175" width="200" height="231" map="sandmap.png" mapx="55" mapy="10">
+		<point name="woshi" x="150" y="170" direction="90" />
+		<point name="shufang" x="155" y="40" direction="15" />
+		<point name="keting" x="45" y="140" direction="10" />
+	</sandmap>
+
+
+	<scene name="keting" title="客厅" thumburl="keting/thumb.jpg">
 		<hotspot style="hotspot"
 			direction="right"
 			ath="12.878134636095"
@@ -41,7 +41,7 @@
 	</scene>
 
 
-	<scene name="woshi" title="卧室" pointx="150" pointy="170" direction="90" thumburl="woshi/thumb.jpg">
+	<scene name="woshi" title="卧室" thumburl="woshi/thumb.jpg">
 		<hotspot style="hotspot"
 			direction="ahead"
 			ath="249.11837039983"
@@ -57,7 +57,7 @@
 	</scene>
 
 
-	<scene name="shufang" title="书房" pointx="155" pointy="40" direction="15" thumburl="shufang/thumb.jpg">
+	<scene name="shufang" title="书房" thumburl="shufang/thumb.jpg">
 		<hotspot style="hotspot"
 			direction="left"
 			ath="198.16314809776"

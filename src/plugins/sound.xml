@@ -2,10 +2,16 @@
 
 	<!--引用官方插件-->
 	<plugin name="@sound_interface"
-        url="soundinterface.js"
+        url="com/soundinterface.js"
         preload="true"
         keep="true" />
 
+    <action name="@sound.init">
+    	set(layer[@sound].x, %1);
+    	set(layer[@sound].y, %2);
+    	set(layer[@sound].visible, true);
+    	tween(layer[@sound].alpha, 1);
+    </action>
 
 	<action name="@sound_init" autorun="onstart">
 		if (
@@ -15,9 +21,13 @@
 				playsound($sound, get(sound[0].url), 0);
 				def($sound_is_playing, boolean, true);
 				def($sound_is_loaded, boolean, true);,
-				set(layer[@sound].crop, '0|0|100|100');
+				set(layer[@sound].crop, '0|100|100|100');
 				def($sound_is_playing, boolean, false);
-			);,
+			);
+			set(layer[@sound].x, get(x));
+			set(layer[@sound].y, get(y));
+			set(y, calc(y + layer[@sound].height + 10));
+			,
 			removelayer(@sound, true);
 		);
 	</action>
@@ -26,11 +36,11 @@
 	<action name="@sound_toggle">
 		if (
 			$sound_is_playing,
-			set(crop, '0|0|100|100');
+			set(crop, '0|100|100|100');
 			pausesound($sound);
 			@toast.show('背景音乐关闭', 1.5);
 			def($sound_is_playing, boolean, false);,
-			set(crop, '0|100|100|100');
+			set(crop, '0|0|100|100');
 			@toast.show('背景音乐开启', 1.5);
 			if (
 				$sound_is_loaded,
@@ -43,17 +53,16 @@
 	</action>
 
 	<style name="@sound"
-		visible="false"
 		alpha="0"
+		visible="false"
 		keep="true"
 		width="45"
 		height="45"
-		crop="0|100|100|100"
+		crop="0|0|100|100"
 		url="../images/bgsound.png"
 		align="righttop"
-		toggle="true"
 		zorder="2"
-		onclick="@sound_toggle()" />
+		onclick="@sound_toggle" />
 
 	<layer name="@sound" style="@sound" />
 

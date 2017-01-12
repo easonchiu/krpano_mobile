@@ -1,0 +1,43 @@
+<krpano>
+
+	<!--vr插件-->
+	<include url="com/webvr.xml" />
+
+	<action name="@vr.init">
+    	set(layer[@vr].x, %1);
+    	set(layer[@vr].y, %2);
+    	set(layer[@vr].visible, true);
+    	tween(layer[@vr].alpha, 1);
+    </action>
+
+	<action name="@vr_init" autorun="onstart">
+		if (
+			vr[0].x !== null
+			AND vr[0].x !== null,
+
+			layer[@vr].changeorigin();
+			def($gravity_is_running, boolean, true);,
+
+			removelayer(@vr);
+		);
+	</action>
+
+	<action name="@vr_click">
+		plugin[WebVR].enterVR();
+	</action>
+
+	<style name="@vr"
+		alpha="0"
+		visible="false"
+		keep="true"
+		width="45"
+		height="45"
+		crop="0|0|100|100"
+		url="../images/vr.png"
+		align="righttop"
+		zorder="2"
+		onclick="@vr_click" />
+
+	<layer name="@vr" style="@vr" />
+
+</krpano>
