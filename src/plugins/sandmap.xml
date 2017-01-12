@@ -42,7 +42,7 @@
 			nexttick(
 				for (
 					set($sandmap_i, 0), $sandmap_i LT sandmap[0].point.count, inc($sandmap_i),
-					@sandmap_point_creator(sandmap[0].point[get($sandmap_i)].x, sandmap[0].point[get($sandmap_i)].y, sandmap[0].point[get($sandmap_i)].name);
+					@sandmap_point_creator(sandmap[0].point[get($sandmap_i)].x, sandmap[0].point[get($sandmap_i)].y, sandmap[0].point[get($sandmap_i)].scene);
 				);
 				def($sandmap_has_init, boolean, true);
 				def($sandmap_is_show, boolean, false);

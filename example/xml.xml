@@ -18,6 +18,17 @@
 	</sandmap>
 
 
+	<!--尚未实现该功能(start)-->
+	<scenelink>
+		<link name="p1" atscene="keting" ath="12" atv="10" to="woshi" title="卧室" />
+	</scenelink>
+	<!--尚未实现该功能(end)-->
+
+
+
+
+
+
 	<scene name="keting" title="客厅" thumburl="keting/thumb.jpg">
 		<hotspot style="hotspot"
 			direction="right"

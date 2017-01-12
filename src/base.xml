@@ -24,8 +24,6 @@
 
     <!--初始化-->
     <action name="init_view">
-
-
     	if (
 			xml.view.vlookat === null,
 			set(xml.view.vlookat, 0);

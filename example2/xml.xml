@@ -22,6 +22,7 @@
 	<mall>
 		<tag name="t1" atscene="keting" atv="10" ath="240" product="p2|p1" />
 		<tag name="t2" atscene="keting" atv="50" ath="90" product="p3|p4|p5" />
+		
 		<product name="p1"
 			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯"
 			thumb="products/1.jpg"

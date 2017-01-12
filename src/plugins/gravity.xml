@@ -47,11 +47,11 @@
 		if (
 			$gravity_is_running,
 			set(crop, '0|100|100|100');
-			set(plugin[gyro].enabled, false);
+			set(plugin[@gravity_gyro].enabled, false);
 			@toast.show('重力感应关闭', 1.5);
 			def($gravity_is_running, boolean, false);,
 			set(crop, '0|0|100|100');
-			set(plugin[gyro].enabled, true);
+			set(plugin[@gravity_gyro].enabled, true);
 			@toast.show('重力感应开启', 1.5);
 			def($gravity_is_running, boolean, true);
 		);
