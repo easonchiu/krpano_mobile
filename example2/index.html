@@ -93,7 +93,7 @@
 				title: '',
 				price: 0,
 				pic: '',
-				wantShow: false,
+				wantShow: true,
 				r: undefined,
 			},
 			methods: {
@@ -114,7 +114,8 @@
 			        		this.r.destroy();
 			        	}
 					}
-					console.log(v)
+					var w = document.getElementById('pic360').parentNode.clientWidth;
+					var s = w / 600;
 					this.r = new run360({
 				        el: document.getElementById('pic360'),
 				        width: 600,
@@ -122,9 +123,10 @@
 				        name: 'p' + v, // 图片名
 				        count: 12, // 图片总数
 				        current: 1, // 当前图片位置
-				        scale: 0.7, // 缩放
+				        scale: s, // 缩放
 				        scaleRange: [0.5, 1.8],
-				        angle: 1 // 总共视角
+				        angle: 1, // 总共视角
+				        reverse: true, // 是否反方向运动
 				    });
 				    this.r.play();
 				}
