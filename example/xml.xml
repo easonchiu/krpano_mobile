@@ -3,26 +3,28 @@
 	<!--基础功能-->
 	<include url="../src/base.xml" />
 
-	<entry scene="woshi" />
+	<entry scene="keting" />
 
-	<sound x="10" y="10" url="./sound.mp3" autoplay="true" />
+	<sound x="10" y="10" url="./sound.mp3" autoplay="false" />
 
 	<gravity x="10" y="65" />
 
 	<vr x="10" y="120" />
 
 	<sandmap x="10" y="175" width="200" height="231" map="sandmap.png" mapx="55" mapy="10">
-		<point name="woshi" x="150" y="170" direction="90" />
-		<point name="shufang" x="155" y="40" direction="15" />
-		<point name="keting" x="45" y="140" direction="10" />
+		<point name="p1" scene="woshi" x="150" y="170" direction="90" />
+		<point name="p2" scene="shufang" x="155" y="40" direction="15" />
+		<point name="p3" scene="keting" x="45" y="140" direction="10" />
 	</sandmap>
 
 
-	<!--尚未实现该功能(start)-->
 	<scenelink>
-		<link name="p1" atscene="keting" ath="12" atv="10" to="woshi" title="卧室" />
+		<link name="l1" atscene="keting" ath="12.8" atv="10.3" to="woshi" title="卧室" direction="right" />
+		<link name="l2" atscene="keting" ath="11.8" atv="0.4" to="shufang" title="书房" direction="left" />
+		<link name="l3" atscene="woshi" ath="249" atv="15.7" to="shufang" title="书房" />
+		<link name="l4" atscene="shufang" ath="198" atv="22" to="keting" title="客厅" direction="left" />
+		<link name="l5" atscene="shufang" ath="200" atv="12" to="woshi" title="卧室" />
 	</scenelink>
-	<!--尚未实现该功能(end)-->
 
 
 
@@ -30,20 +32,6 @@
 
 
 	<scene name="keting" title="客厅" thumburl="keting/thumb.jpg">
-		<hotspot style="hotspot"
-			direction="right"
-			ath="12.878134636095"
-			atv="10.3502532533291"
-			link="woshi"
-			title="卧室" />
-
-		<hotspot style="hotspot"
-			direction="left"
-			ath="11.878134636095"
-			atv="0.3502532533291"
-			link="shufang"
-			title="书房" />
-
 		<view hlookat="160" fovmin="60" fov="95" fovmax="120" />
 		<preview url="keting/preview.jpg" />
 		<image>
@@ -53,13 +41,6 @@
 
 
 	<scene name="woshi" title="卧室" thumburl="woshi/thumb.jpg">
-		<hotspot style="hotspot"
-			direction="ahead"
-			ath="249.11837039983"
-			atv="15.756736275496"
-			link="shufang"
-			title="书房" />
-
 		<view hlookat="20" fovmin="60" fov="95" fovmax="120" />
 		<preview url="woshi/preview.jpg" />
 		<image>
@@ -69,19 +50,6 @@
 
 
 	<scene name="shufang" title="书房" thumburl="shufang/thumb.jpg">
-		<hotspot style="hotspot"
-			direction="left"
-			ath="198.16314809776"
-			atv="21.961074334392"
-			link="keting"
-			title="客厅" />
-		<hotspot style="hotspot"
-			direction="ahead"
-			ath="200.16314809776"
-			atv="11.961074334392"
-			link="woshi"
-			title="卧室" />
-
 		<view hlookat="20" fovmin="60" fov="95" fovmax="120" />
 		<preview url="shufang/preview.jpg" />
 		<image>

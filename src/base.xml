@@ -15,69 +15,21 @@
 	<!--沙盘插件-->
 	<include url="plugins/sandmap.xml" />
 
+	<!--场景切换箭头-->
+	<include url="plugins/scenelink.xml" />
+
     <!--自动旋转-->
     <autorotate enabled="true" waittime="5.0" speed="5.0" horizon="0.0" />
 
-	
-	
+    <!--事件-->
+	<events name="@global_event" keep="true"
+		onxmlcomplete="@global_start"
+		onnewscene="@global_complete" />
 
-
-    <!--初始化-->
-    <action name="init_view">
-    	if (
-			xml.view.vlookat === null,
-			set(xml.view.vlookat, 0);
-		);
-		if (
-			xml.view.hlookat === null,
-			set(xml.view.hlookat, 0);
-		);
-		if (
-			xml.view.fov === null,
-			set(xml.view.fov, 95);
-		);
-
-		<!--不可操控-->
-		set(control.usercontrol, off);
-
-
-		set(layer[tab_switch].alpha, 0);
-		for (
-			set(i, 0), i LT hotspot.count, inc(i),
-			set(hotspot[get(i)].alpha, 0);
-		);
-
-		tween(view.pannini, 0.0, 1, easeOutQuad);
-		tween(view.fisheye, 0.35, 1, easeOutQuad);
-		tween(view.distortion, 0, 1, easeOutQuad);
-		tween(view.hlookat, get(xml.view.hlookat), 2, easeOutQuad);
-		tween(view.vlookat, get(xml.view.vlookat), 2, easeOutQuad);
-		tween(view.fov, get(xml.view.fov), 2, easeOutQuad,
-			
-
-
-
-			@sound.init(get(sound[0].x), get(sound[0].y));
-			@sandmap.init(get(sandmap[0].x), get(sandmap[0].y));
-			@gravity.init(get(gravity[0].x), get(gravity[0].y));
-			@vr.init(get(vr[0].x), get(vr[0].y));
-
-
-
-
-
-
-			tween(layer[tab_switch].alpha, 0.75);
-
-			<!--用户可操控-->
-			set(control.usercontrol, all);
-		);
-
-	</action>
-
-	<action name="startup" autorun="onstart">
+	<!--初始化-->
+    <action name="@global_init" autorun="onstart">
 		<!--加载首个场景-->
-		set(firstscene, true);
+		set($global_first_scene, true);
 
 		<!--配置全景入口-->
 		if(
@@ -111,7 +63,7 @@
 					set(layer[get(thumb_pic)].link, get(scene[get(i)].name));
 					set(layer[get(thumb_pic)].width, 100%);
 					set(layer[get(thumb_pic)].height, 100%);
-					set(layer[get(thumb_pic)].onclick, transform_scene);
+					<!-- set(layer[get(thumb_pic)].onclick, transform_scene); -->
 					txtadd(thumb_title, 'thumb_item_title_', get(scene[get(i)].name));
 					addlayer(get(thumb_title));
 					set(layer[get(thumb_title)].parent, get(thumb_item));
@@ -127,18 +79,54 @@
 		);
 	</action>
 
-	
 
-	<!--切换场景loading-->
-	<events name="on_new_scene" keep="true" onxmlcomplete="startloading();" onnewscene="endloading();" />
-	<action name="startloading">
+    <!--首次加载-->
+    <action name="init_view">
+    	<!--参数-->
+		if (
+			xml.view.vlookat === null,
+			set(xml.view.vlookat, 0);
+		);
+		if (
+			xml.view.hlookat === null,
+			set(xml.view.hlookat, 0);
+		);
+		if (
+			xml.view.fov === null,
+			set(xml.view.fov, 95);
+		);
+
+		<!--不可操控-->
+		set(control.usercontrol, off);
+
+		tween(view.pannini, 0.0, 1, easeOutQuad);
+		tween(view.fisheye, 0.35, 1, easeOutQuad);
+		tween(view.distortion, 0, 1, easeOutQuad);
+		tween(view.hlookat, get(xml.view.hlookat), 2, easeOutQuad);
+		tween(view.vlookat, get(xml.view.vlookat), 2, easeOutQuad);
+		tween(view.fov, get(xml.view.fov), 2, easeOutQuad,
+
+			@sound.init(get(sound[0].x), get(sound[0].y));
+			@sandmap.init(get(sandmap[0].x), get(sandmap[0].y));
+			@gravity.init(get(gravity[0].x), get(gravity[0].y));
+			@vr.init(get(vr[0].x), get(vr[0].y));
+
+
+			tween(layer[tab_switch].alpha, 0.75);
+
+			<!--用户可操控-->
+			set(control.usercontrol, all);
+		);
+	</action>
+
+	<!--loading 开始-->
+	<action name="@global_start">
 		@toast.show('加载中');
 		
-		set(layer[scene_name_tips].alpha, 0);
-		stopdelayedcall(titledelay);
-		stopdelayedcall(titledelay2);
+		stopdelayedcall($global_title_delay);
+		stopdelayedcall($global_title_delay2);
 		if (
-			firstscene,
+			$global_first_scene,
 	    	set(view.pannini, 0.1);
 	    	set(view.fisheye, 0.0);
 	    	set(view.distortion, 1.3);
@@ -147,26 +135,27 @@
 	    	set(view.hlookat, calc(xml.view.hlookat + 180));
     	);
 	</action>
-	<action name="endloading">
+
+	<!--loading 结束-->
+	<action name="@global_complete">
 		if (
-			firstscene,
-			set(firstscene, false);
+			$global_first_scene,
+			set($global_first_scene, false);
 			wait(1);
 			init_view();,
 		);
 		
-		@toast.hide();
-		set(layer[scene_name_tips].html, get(scene[get($global.current_scene)].title));
-
 		delayedcall(
-			titledelay,
+			$global_title_delay,
 			1,
-			tween(layer[scene_name_tips].alpha, 1, 0.3, easeOutQuad);
+			@toast.hide();
+			@global_show_scene_title();
 			delayedcall(
-				titledelay2,
+				$global_title_delay2,
 				3,
-				tween(layer[scene_name_tips].alpha, 0, 0.3, easeOutQuad);
+				@global_hide_scene_title();
 			);
+
 			switch_tap(false);
 			for (
 				set(i, 0), i LT hotspot.count, inc(i),
@@ -175,22 +164,50 @@
 		);
 	</action>
 
-	<layer name="scene_name_tips"
+
+	<!--场景切换-->
+	<action name="@global.transform_scene">
+		if (
+			$global.current_scene !== %1,
+			set($global.current_scene, %1);
+			set(control.usercontrol, off);
+			loadscene(get($global.current_scene), null, MERGE, BLEND(2, easeOutCubic));
+			set(control.usercontrol, all);
+		);
+	</action>
+
+	<!--场景标题层-->
+	<layer name="@global_scene_title"
 		keep="true"
 		url="textfield.swf"
 		html=""
 		align="topcenter"
 		backgroundcolor="0xffffff"
-		backgroundalpha="0.2"
+		backgroundalpha="0.3"
 		width="100%"
 		alpha="0"
 		y="100"
 		enabled="false"
 		css="color:#ffffff;font-size:26px;padding:12px;text-shadow:0 1px 4px rgba(0,0,0,0.3);text-align:center;" />
-
 	
+	<!--显示场景标题-->
+	<action name="@global_show_scene_title">
+		set(layer[@global_scene_title].alpha, 0);
+		set(layer[@global_scene_title].html, get(scene[get($global.current_scene)].title));
+		tween(layer[@global_scene_title].alpha, 1, 0.3, easeOutQuad);
+	</action>
 
-	
+	<!--隐藏场景标题-->
+	<action name="@global_hide_scene_title">
+		tween(layer[@global_scene_title].alpha, 0, 0.3, easeOutQuad);
+	</action>
+
+
+
+
+
+
+
 
 
 
@@ -261,116 +278,9 @@
 	</action>
 	<events name="tab_event" keep="true" onmousedown="switch_tap(false)" />
 
-	<!--跳转场景-->
-	<action name="transform_scene">
-		if (
-			$global.current_scene !== link,
-			set($global.current_scene, get(link));
 
-			
+	
 
-			for (
-				set(i, 0), i LT scene.count, inc(i),
-				txtadd(thumb_item, 'thumb_item_', get(scene[get(i)].name));
-				if (
-					scene[get(i)].name == $global.current_scene,
-					set(layer[get(thumb_item)].bgborder, '3 0xF6B64C');,
-					set(layer[get(thumb_item)].bgborder, '3 0xFFFFFF');
-				);
-			);
-
-			set(control.usercontrol, off);
-			<!-- if (
-				wantanimate === true,
-				copy(ath2, ath);
-				if (
-					calc(view.hlookat - ath2) LE 180 AND calc(view.hlookat - ath2) GT -180,
-					set(ath2, ath2);,
-					set(ath2, -ath2);,
-				);
-				tween(view.hlookat, get(ath2), 1, easeOutCubic);
-				tween(view.vlookat, 1.2, 1, easeOutCubic);
-				set(transformfov, true);
-				set(tweenbackfov, get(view.fov));
-				wait(0.5);
-				tween(view.fov, 50, 2, easeOutCubic);
-			); -->
-			loadscene(get($global.current_scene), null, MERGE, BLEND(2, easeOutCubic));
-			set(control.usercontrol, all);
-		);
-	</action>
-
-	<!--热点样式-->
-	<style name="hotspot"
-		type="image"
-		url="images/arrow.png"
-		width="prop"
-		height="60"
-		zoom="false"
-		alpha="0"
-		wantanimate="true"
-		onloaded="hotspot_init(128, 128, 60)"
-		onclick="transform_scene()" />
-
-	<!--热点提示层样式-->
-	<style name="hotspot_layer"
-		url="textfield.swf"
-		align="center"
-		edge="center"
-		height="24"
-		y="-20"
-		backgroundcolor="0x000000"
-		backgroundalpha="0.6"
-		roundedge="4"
-		enabled="false"
-		css="text-align: center; line-height: 24px; padding: 0 6px; margin: 0; color: #ffffff;  font-size:12px;" />
-
-	<!--热点初始化-->
-	<action name="hotspot_init">
-		<!--设置箭头-->
-		if (
-			direction == 'left',
-			set(nurl, get(url));
-			txtreplace(nurl, 'arrow.png', 'arrow-left.png');
-			set(url, get(nurl));
-		);
-		if (
-			direction == 'right',
-			set(nurl, get(url));
-			txtreplace(nurl, 'arrow.png', 'arrow-right.png');
-			set(url, get(nurl));
-		);
-		<!--add layer-->
-		txtadd(lname, 'hotspotinit_layer_', get(name));
-		addlayer(get(lname));
-		layer[get(lname)].loadstyle(hotspot_layer);
-		txtadd(sname, 'hotspot[', get(name), ']');
-		set(layer[get(lname)].parent, get(sname));
-		set(layer[get(lname)].html, get(title));
-		<!--animate-->
-		registerattribute(xframes, calc((imagewidth / %1) BOR 0));
-		registerattribute(yframes, calc((imageheight / %2) BOR 0));
-		registerattribute(frames, calc(xframes * yframes));
-		registerattribute(frame, 0); set(crop, '0|0|%1|%2');
-		setinterval(
-			calc('crop_anim_' + name),
-			calc(1.0 / %3),
-			if(
-				loaded,
-				inc(frame);
-				if(
-					frame GE frames,
-					set(frame,0);
-				);
-				mod(xpos, frame, xframes);
-				div(ypos, frame, xframes);
-				Math.floor(ypos); mul(xpos, %1);
-				mul(ypos, %2);
-				calc(crop, xpos + '|' + ypos + '|%1|%2');,
-				clearinterval(calc('crop_anim_' + name));
-			);
-		);
-	</action>
 
 
 

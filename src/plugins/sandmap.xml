@@ -68,9 +68,9 @@
 			<!--设置当前点-->
 			for (
 				set($sandmap_i, 0), $sandmap_i LT sandmap[0].point.count, inc($sandmap_i),
-				txtadd($sandmap_point, '@sandmap_point_', get(sandmap[0].point[get($sandmap_i)].name));
+				txtadd($sandmap_point, '@sandmap_point_', get(sandmap[0].point[get($sandmap_i)].scene));
 				if (
-					sandmap[0].point[get($sandmap_i)].name === $global.current_scene,
+					sandmap[0].point[get($sandmap_i)].scene === $global.current_scene,
 
 					set(layer[@sandmap_range].x, calc(layer[get($sandmap_point)].x + 10));
 					set(layer[@sandmap_range].y, calc(layer[get($sandmap_point)].y + 10));
@@ -158,7 +158,7 @@
 			addlayer(get($sandmap_point));
 			set(layer[get($sandmap_point)].x, calc(%1 - 10));
 			set(layer[get($sandmap_point)].y, calc(%2 - 10));
-			set(layer[get($sandmap_point)].link, get(%3));
+			set(layer[get($sandmap_point)].to, get(%3));
 			layer[get($sandmap_point)].loadstyle($sandmap_point);
 			if (
 				$global.current_scene == %3,
@@ -185,7 +185,10 @@
 
 	<!--地图上的点点击事件-->
 	<action name="@sandmap_point_click">
-		transform_scene();
+		if (
+			to !== null,
+			@global.transform_scene(get(to));
+		);
 	</action>
 
 </krpano>

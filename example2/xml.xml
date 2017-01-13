@@ -16,6 +16,10 @@
 		<point name="p2" x="155" y="138" direction="-180" scene="keting" />
 	</sandmap>
 
+	<scenelink>
+		<link name="l1" atscene="shufang" ath="180" atv="0" to="keting" title="客厅" direction="left" />
+	</scenelink>
+
 
 	<!--mall-->
 	<include url="../src/plugins/mall.xml" />
@@ -53,14 +57,6 @@
 	
 
 	<scene name="shufang" title="书房" thumburl="shufang/thumb.jpg">
-
-		<hotspot style="hotspot"
-			direction="left"
-			ath="180"
-			atv="0"
-			link="keting"
-			title="客厅" />
-
 		<view hlookat="20" fovmin="60" fov="95" fovmax="120" />
 		<preview url="shufang/preview.jpg" />
 		<image>

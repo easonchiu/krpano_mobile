@@ -1,0 +1,120 @@
+<krpano>
+
+	<events name="@scenelink_event" keep="true"
+		onremovepano="@scenelink_ready" />
+
+	<action name="@scenelink_ready">
+		stopdelayedcall($scenelink_init_delay);
+		delayedcall(
+			$scenelink_init_delay,
+			2,
+			if (
+				scenelink[0] !== null AND scenelink[0].link !== null,
+				for (
+					set($scenelink_i, 0), $scenelink_i LT scenelink[0].link.count, inc($scenelink_i),
+					if (
+						scenelink[0].link[get($scenelink_i)].atscene === $global.current_scene,
+						@scenelink_creator(scenelink[0].link[get($scenelink_i)], $scenelink_i);
+					);
+				);
+				set(layer[@mall_panel].enabled, false);
+			);
+		);
+	</action>
+
+	<!--创造箭头-->
+	<action name="@scenelink_creator">
+		txtadd($scenelink_hotspot, '@scenelink_hotspot_', get(%2));
+		addhotspot(get($scenelink_hotspot));
+		set(hotspot[get($scenelink_hotspot)].atv, get(%1.atv));
+		set(hotspot[get($scenelink_hotspot)].ath, get(%1.ath));
+		set(hotspot[get($scenelink_hotspot)].to, get(%1.to));
+		set(hotspot[get($scenelink_hotspot)].direction, get(%1.direction));
+		set(hotspot[get($scenelink_hotspot)].title, get(%1.title));
+		hotspot[get($scenelink_hotspot)].loadstyle(@scenelink_hotspot);
+		tween(hotspot[get($scenelink_hotspot)].alpha, 1, 0.3);
+	</action>
+
+	<!--箭头样式-->
+	<style name="@scenelink_hotspot"
+		type="image"
+		keep="false"
+		role="scenelink"
+		url="../images/arrow.png"
+		width="prop"
+		height="60"
+		zoom="false"
+		enable="false"
+		alpha="0"
+		onloaded="@scenelink_hotspot_animate(128, 128, 60)"
+		onclick="@scenelink_hotspot_click" />
+
+	<!--箭头提示层样式-->
+	<style name="@scenelink_hotspot_title"
+		url="textfield.swf"
+		align="center"
+		edge="center"
+		height="24"
+		y="-20"
+		backgroundcolor="0x000000"
+		backgroundalpha="0.6"
+		roundedge="4"
+		enabled="false"
+		css="text-align: center; line-height: 24px; padding: 0 6px; margin: 0; color: #ffffff;  font-size:12px;" />
+
+	<!--箭头点击-->
+	<action name="@scenelink_hotspot_click">
+		if (
+			to !== null,
+			@global.transform_scene(get(to));
+		);
+	</action>
+
+	<!--箭头动画-->
+	<action name="@scenelink_hotspot_animate">
+		<!--设置箭头-->
+		if (
+			direction == 'left',
+			txtreplace(url, 'arrow.png', 'arrow-left.png');
+		);
+		if (
+			direction == 'right',
+			txtreplace(url, 'arrow.png', 'arrow-right.png');
+		);
+
+		<!--添加文字提示层-->
+		txtadd($scenelink_hotspot_title, '@scenelink_hotspot_title', get(title));
+		addlayer(get($scenelink_hotspot_title));
+		set(layer[get($scenelink_hotspot_title)].parent, calc('hotspot[' + name + ']'));
+		set(layer[get($scenelink_hotspot_title)].html, get(title));
+		layer[get($scenelink_hotspot_title)].loadstyle(@scenelink_hotspot_title);
+
+		<!--箭头做动画-->
+		registerattribute(xframes, calc((imagewidth / %1) BOR 0));
+		registerattribute(yframes, calc((imageheight / %2) BOR 0));
+		registerattribute(frames, calc(xframes * yframes));
+		registerattribute(frame, 0);
+		set(crop, '0|0|%1|%2');
+		setinterval(
+			calc(name + '_animate'),
+			calc(1.0 / %3),
+			if(
+				loaded,
+				inc(frame);
+				if(
+					frame GE frames,
+					set(frame, 0);
+				);
+				mod(xpos, frame, xframes);
+				div(ypos, frame, xframes);
+				Math.floor(ypos); mul(xpos, %1);
+				mul(ypos, %2);
+				calc(crop, xpos + '|' + ypos + '|%1|%2');,
+				clearinterval(calc(name + '_animate'));
+			);
+		);
+	</action>
+
+
+
+</krpano>

@@ -205,7 +205,7 @@
 	<!--产品箭头样式-->
 	<style name="@mall_product_tag"
 		type="image"
-		keep="true"
+		keep="false"
 		role="mall"
 		url="../images/arrow-product.png"
 		width="60"
