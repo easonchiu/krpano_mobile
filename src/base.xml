@@ -41,7 +41,6 @@
 		<!--加载全景-->
 		loadscene(get($global.current_scene), null, MERGE, COLORBLEND(1, 0xffffff));
 
-
 		
 		if(
 			scene.count LT 2,
