@@ -13,6 +13,8 @@
 	</action>
 
 	<action name="@mall_init">
+		showlog();
+
 		stopdelayedcall($mall_init_delay);
 		delayedcall(
 			$mall_init_delay,
@@ -78,12 +80,15 @@
 		layer[get($mall_panel_item)].loadstyle(@mall_panel_item);
 
 		<!--点击区域-->
-		txtadd($mall_panel_item_clicker, '@mall_panel_item_clicker_', %2);
-		addlayer(get($mall_panel_item_clicker));
-		set(layer[get($mall_panel_item_clicker)].link, get(%1.link));
-		set(layer[get($mall_panel_item_clicker)].callback, get(%1.callback));
-		set(layer[get($mall_panel_item_clicker)].parent, get($mall_panel_item));
-		layer[get($mall_panel_item_clicker)].loadstyle(@mall_panel_item_clicker);
+		if (
+			%1.btntext === null,
+			txtadd($mall_panel_item_clicker, '@mall_panel_item_clicker_', %2);
+			addlayer(get($mall_panel_item_clicker));
+			set(layer[get($mall_panel_item_clicker)].link, get(%1.link));
+			set(layer[get($mall_panel_item_clicker)].callback, get(%1.callback));
+			set(layer[get($mall_panel_item_clicker)].parent, get($mall_panel_item));
+			layer[get($mall_panel_item_clicker)].loadstyle(@mall_panel_item_clicker);
+		);
 
 		<!--缩略图容器-->
 		txtadd($mall_panel_item_thumb, '@mall_panel_item_thumb_', %2);
@@ -109,7 +114,6 @@
 		txtadd($mall_panel_item_price, '@mall_panel_item_price_', %2);
 		addlayer(get($mall_panel_item_price));
 		set(layer[get($mall_panel_item_price)].parent, get($mall_panel_item));
-		set(layer[get($mall_panel_item_price)].y, 50);
 		set(layer[get($mall_panel_item_price)].html, get(%1.price));
 		layer[get($mall_panel_item_price)].loadstyle(@mall_panel_item_price);
 
@@ -117,8 +121,26 @@
 		txtadd($mall_panel_item_price_rmb, '@mall_panel_item_price_rmb_', %2);
 		addlayer(get($mall_panel_item_price_rmb));
 		set(layer[get($mall_panel_item_price_rmb)].parent, get($mall_panel_item));
-		set(layer[get($mall_panel_item_price_rmb)].y, 53);
 		layer[get($mall_panel_item_price_rmb)].loadstyle(@mall_panel_item_price_rmb);
+
+		<!--按钮-->
+		if (
+			%1.btntext !== null,
+			if (
+				%1.btncolor !== null,
+				set($mall_panel_item_btn_color, get(%1.btncolor));,
+				set($mall_panel_item_btn_color, '0xff0000');
+			);
+			trace( $mall_panel_item_btn_color );
+			txtadd($mall_panel_item_btn, '@mall_panel_item_btn_', %2);
+			addlayer(get($mall_panel_item_btn));
+			set(layer[get($mall_panel_item_btn)].parent, get($mall_panel_item));
+			set(layer[get($mall_panel_item_btn)].html, get(%1.btntext));
+			set(layer[get($mall_panel_item_btn)].backgroundcolor, get($mall_panel_item_btn_color));
+			set(layer[get($mall_panel_item_btn)].link, get(%1.link));
+			set(layer[get($mall_panel_item_btn)].callback, get(%1.callback));
+			layer[get($mall_panel_item_btn)].loadstyle(@mall_panel_item_btn);
+		);
 
 		<!--设置滚动区的宽度-->
 		set(layer[@mall_panel_scroller].width, calc(310 * (%2 + 1) + 10));
@@ -179,7 +201,7 @@
 	    y="10"
 	    width="170"
 	    height="40"
-		css="font-size:15px;color:#444;line-height:20px" />
+		css="font-size:15px;color:#444;line-height:20px;" />
 
 	<!--产品模块价钱-->
 	<style name="@mall_panel_item_price"
@@ -188,8 +210,9 @@
 	    keep="true"
 	    role="mall"
 	    x="131"
+	    y="53"
 	    width="170"
-		css="font-size:18px;color:#444;line-height:1.2" />
+		css="font-size:18px;color:#444;line-height:1.2;" />
 
 	<!--¥符号-->
 	<style name="@mall_panel_item_price_rmb"
@@ -199,8 +222,21 @@
 	    role="mall"
 	    html="¥"
 	    x="120"
+	    y="56"
 	    width="170"
-		css="font-size:14px;color:#444;line-height:1.2" />
+		css="font-size:14px;color:#444;line-height:1.2;" />
+
+	<!--产品按钮-->
+	<style name="@mall_panel_item_btn"
+		url="textfield.swf"
+		backgroundalpha="1"
+		keep="true"
+	    role="mall"
+	    x="120"
+	    y="80"
+	    roundedge="3"
+		css="font-size:14px;color:#444;line-height:1.2;padding:4px 10px;color:#fff;"
+		onclick="@mall_panel_item_click" />
 
 	<!--产品箭头样式-->
 	<style name="@mall_product_tag"
