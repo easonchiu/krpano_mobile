@@ -13,8 +13,6 @@
 	</action>
 
 	<action name="@mall_init">
-		showlog();
-
 		stopdelayedcall($mall_init_delay);
 		delayedcall(
 			$mall_init_delay,
@@ -131,7 +129,6 @@
 				set($mall_panel_item_btn_color, get(%1.btncolor));,
 				set($mall_panel_item_btn_color, '0xff0000');
 			);
-			trace( $mall_panel_item_btn_color );
 			txtadd($mall_panel_item_btn, '@mall_panel_item_btn_', %2);
 			addlayer(get($mall_panel_item_btn));
 			set(layer[get($mall_panel_item_btn)].parent, get($mall_panel_item));
@@ -247,7 +244,6 @@
 		width="60"
 		height="60"
 		zoom="false"
-		enable="false"
 		alpha="0"
 		scale="1"
 		onloaded="@mall_product_tag_animate"
@@ -265,6 +261,10 @@
 		if (
 			value !== $mall_products_value,
 			@mall_product_destroy();
+
+			<!--该功能与场景切换功能叠加，所以要设置一下-->
+			@scenebar_toggle(false, false);
+
 		);
 		looktohotspot(get(name), get(view.fov));
 		if (

@@ -1,0 +1,184 @@
+<krpano>
+
+	<!--事件侦听-->
+	<events name="@scenebar_event" keep="true"
+		onmousedown="@scenebar_toggle(false)"
+		onnewscene="@scenebar_reset" />
+
+
+	<action name="@scenebar.init">
+		@scenebar_init();
+		set(layer[@scenebar_tips].visible, true);
+    	tween(layer[@scenebar_tips].alpha, 0.7);
+	</action>
+
+	<!--切换场景后的重置-->
+	<action name="@scenebar_reset">
+		if(
+			scene.count GT 1,
+			for (
+				set($scenebar_i, 0), $scenebar_i LT scene.count, inc($scenebar_i),
+				txtadd($scenebar_current_item, '@scenebar_item_', get(scene[get($scenebar_i)].name));
+				if (
+					scene[get($scenebar_i)].name === $global.current_scene,
+					set(layer[get($scenebar_current_item)].bgcolor, '0xf6b64c');,
+					set(layer[get($scenebar_current_item)].bgcolor, '0xffffff');
+				);
+			);
+		);
+	</action>
+
+	<!--初始化-->
+	<action name="@scenebar_init">
+		if(
+			scene.count LT 2,
+			removelayer(@scenebar_container, true);
+			removelayer(@scenebar_tips, true);,
+			for (
+				set($scenebar_i, 0), $scenebar_i LT scene.count, inc($scenebar_i),
+				if (scene[get($scenebar_i)].thumburl !== null,
+
+					<!--外框-->
+					txtadd($scenebar_item, '@scenebar_item_', get(scene[get($scenebar_i)].name));
+					addlayer(get($scenebar_item));
+					set(layer[get($scenebar_item)].parent, layer[@scenebar_scroller]);
+					set(layer[get($scenebar_item)].x, calc($scenebar_i * 120 + 50));
+					layer[get($scenebar_item)].loadstyle(@scenebar_item);
+
+					<!--图片容器-->
+					txtadd($scenebar_item_thumb, '@scenebar_item_thumb_', get(scene[get($scenebar_i)].name));
+					addlayer(get($scenebar_item_thumb));
+					set(layer[get($scenebar_item_thumb)].parent, get($scenebar_item));
+					layer[get($scenebar_item_thumb)].loadstyle(@scenebar_item_thumb);
+
+					<!--图片-->
+					txtadd($scenebar_item_thumb_pic, '@scenebar_item_thumb_pic_', get(scene[get($scenebar_i)].name));
+					addlayer(get($scenebar_item_thumb_pic));
+					set(layer[get($scenebar_item_thumb_pic)].parent, get($scenebar_item_thumb));
+					set(layer[get($scenebar_item_thumb_pic)].url, get(scene[get($scenebar_i)].thumburl));
+					set(layer[get($scenebar_item_thumb_pic)].to, get(scene[get($scenebar_i)].name));
+					layer[get($scenebar_item_thumb_pic)].loadstyle(@scenebar_item_thumb_pic);
+
+					<!--标题-->
+					txtadd($scenebar_title, '@scenebar_title_', get(scene[get($scenebar_i)].name));
+					addlayer(get($scenebar_title));
+					set(layer[get($scenebar_title)].parent, get($scenebar_item_thumb));
+					set(layer[get($scenebar_title)].html, get(scene[get($scenebar_i)].title));
+					layer[get($scenebar_title)].loadstyle(@scenebar_item_title);
+				);
+			);
+			set(layer[@scenebar_scroller].width, calc(scene.count * 120 - 20 + 100));
+			@scenebar_reset();
+		);
+	</action>
+
+	<!--外容器样式-->
+	<style name="@scenebar_container"
+		keep="true"
+		width="100%"
+		height="128"
+		x="0"
+		y="-128"
+		align="bottom"
+		type="container"
+		zorder="9" />
+
+	<!--滚动区域样式-->
+	<style name="@scenebar_scroller"
+		url="com/scrollarea.js"
+		keep="true"
+		direction="h"
+		width="100%"
+		height="100"
+		align="center"
+		onloaded="setcenter(0,0);" />
+
+	<!--每个缩略图样式-->
+	<style name="@scenebar_item"
+		keep="true"
+		width="108"
+		height="108"
+		bgalpha="1"
+		bgcolor="0xffffff"
+		type="container"
+		align="left"
+		bgroundedge="4"
+		bgshadow="0 1 2 0x000000 0.1" />
+
+	<!--缩略图标题样式-->
+	<style name="@scenebar_item_title"
+		url="textfield.swf"
+		keep="true"
+		width="100"
+		enabled="false"
+		backgroundcolor="0x000000"
+	    backgroundalpha="0.3"
+		align="bottomcenter"
+		css="text-align:center;font-size:14px;line-height:18px;color:#fff;" />
+
+	<!--缩略图容器样式-->
+	<style name="@scenebar_item_thumb"
+		width="100"
+		height="100"
+		maskchildren="true"
+		type="container"
+		keep="true"
+		align="center"
+		bgcolor="0xeaeaea"
+		bgalpha="1"
+		bgroundedge="2" />
+
+	<!--缩略图样式-->
+	<style name="@scenebar_item_thumb_pic"
+		keep="true"
+		width="100"
+		height="100"
+		onclick="@scenebar_item_click" />
+
+	<!--容器-->
+	<layer name="@scenebar_container" style="@scenebar_container">
+		<layer name="@scenebar_scroller" style="@scenebar_scroller"></layer>
+	</layer>
+
+	<!--指示箭头-->
+	<style name="@scenebar_tips"
+		url="../images/switch-tab.png"
+		keep="true"
+		width="50"
+		height="50"
+		crop="0|20|100|100"
+		alpha="0.7"
+		visible="false"
+		x="0"
+		y="0"
+		align="centerbottom"
+		onclick="@scenebar_toggle()"
+		zorder="8" />
+
+	<layer name="@scenebar_tips" style="@scenebar_tips" />
+
+	<action name="@scenebar_toggle">
+		if (
+			%1 === false,
+			tween(layer[@scenebar_tips].y, 0, 0.3, easeOutQuad);
+			tween(layer[@scenebar_container].y, -128, 0.3, easeOutQuad);,
+			tween(layer[@scenebar_tips].y, -50, 0.3, easeOutQuad);
+			tween(layer[@scenebar_container].y, 0, 0.3, easeOutQuad);
+		);
+		if (
+			%2 === false,
+			set(layer[@scenebar_tips].alpha, 0);,
+			set(layer[@scenebar_tips].alpha, 0.7);
+		);
+	</action>
+
+	<!--图片点击-->
+	<action name="@scenebar_item_click">
+		@scenebar_toggle(false);
+		@global.transform_scene(get(to));
+	</action>
+	
+
+
+
+</krpano>

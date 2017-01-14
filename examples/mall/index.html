@@ -18,18 +18,8 @@
 			-webkit-transform-origin: 50% 50% !important;
 		}
 	</style>
-
-	<link rel="stylesheet" type="text/css" href="details/css/reset.css">
-	<link rel="stylesheet" type="text/css" href="details/css/style.css">
-
-	<link rel="stylesheet" type="text/css" href="details/p/p1/p1.css">
-	<link rel="stylesheet" type="text/css" href="details/p/p2/p2.css">
-	<link rel="stylesheet" type="text/css" href="details/p/p3/p3.css">
-	<link rel="stylesheet" type="text/css" href="details/p/p4/p4.css">
-	<link rel="stylesheet" type="text/css" href="details/p/p5/p5.css">
-	
 </head>
-<body ontouchstart>
+<body>
 
 	<div id="pano"></div>
 
@@ -44,96 +34,6 @@
             onready: function(){}
         });
 	</script>
-
-
-	<div class="details" id="details" v-cloak v-show="wantShow" style="display: none;">
-		<header>
-			<a href="javascript:;" class="back" v-touch:tap="closeit"></a>
-			<h1>{{ title }}</h1>
-			<a href="javascript:;" class="share"></a>
-		</header>
-		<main>
-
-			<div class="base-info">
-				<div class="pic">
-					<div class="pic360" id="pic360"></div>
-				</div>
-				<h2>{{ title }}</h2>
-				<p>{{ price | currency '¥' }}</p>
-			</div>
-
-			<article>
-				<p>商品名称：{{ title }}</p>
-				<p>商品编号：10763914141</p>
-				<p>毛重：7.0kg</p>
-				<p>商品产地：中国大陆</p>
-				<p>货号：ZSG05064M</p>
-				<p>材质：水晶</p>
-				<p>风格：后现代奢华</p>
-			</article>
-
-		</main>
-		<footer>
-			<a href="javascript:;" class="l contact"><i></i><span>联系卖家</span></a>
-			<a href="javascript:;" class="l love"><i></i><span>收藏</span></a>
-			<a href="javascript:;" class="l shop"><i></i><span>店铺</span></a>
-			<a href="javascript:;" class="add-cart"><i></i><span>加入购物车</span></a>
-		</footer>
-	</div>
-
-
-	<script type="text/javascript" src="details/js/vue.js"></script>
-	<script type="text/javascript" src="details/js/hammer.min.js"></script>
-	<script type="text/javascript" src="details/js/vue.touch.js"></script>
-	<script type="text/javascript" src="details/js/run360.js"></script>
-	<script type="text/javascript">
-		var details = new Vue({
-			el: '#details',
-			data: {
-				title: '',
-				price: 0,
-				pic: '',
-				wantShow: false,
-				r: undefined,
-			},
-			methods: {
-				closeit: function(){
-					this.wantShow = false;
-				},
-				show(title, price, pic){
-		        	this.title = title;
-		        	this.price = price;
-		        	this.pic = pic;
-		        	this.wantShow = true;
-		        }
-			},
-			watch: {
-				pic: function(v, ov){
-					if (this.r) {
-						if (this.r.destroy) {
-			        		this.r.destroy();
-			        	}
-					}
-					var w = document.getElementById('pic360').parentNode.clientWidth;
-					var s = w / 600;
-					this.r = new run360({
-				        el: document.getElementById('pic360'),
-				        width: 600,
-				        height: 600,
-				        name: 'p' + v, // 图片名
-				        count: 12, // 图片总数
-				        current: 1, // 当前图片位置
-				        scale: s, // 缩放
-				        scaleRange: [0.5, 1.8],
-				        angle: 1, // 总共视角
-				        reverse: true, // 是否反方向运动
-				    });
-				    this.r.play();
-				}
-			}
-		});
-	</script>
-
 
 </body>
 </html>

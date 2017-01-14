@@ -18,6 +18,9 @@
 	<!--场景切换箭头-->
 	<include url="plugins/scenelink.xml" />
 
+	<!--场景快捷切换-->
+	<include url="plugins/scenebar.xml" />
+
     <!--自动旋转-->
     <autorotate enabled="true" waittime="5.0" speed="5.0" horizon="0.0" />
 
@@ -40,47 +43,11 @@
 
 		<!--加载全景-->
 		loadscene(get($global.current_scene), null, MERGE, COLORBLEND(1, 0xffffff));
-
-		
-		if(
-			scene.count LT 2,
-			set(layer[tab_box].visible, false);
-			set(layer[tab_switch].visible, false);,
-			for (
-				set(i, 0), i LT scene.count, inc(i),
-				if (scene[get(i)].thumburl !== null,
-					txtadd(thumb_item, 'thumb_item_', get(scene[get(i)].name));
-					addlayer(get(thumb_item));
-					set(layer[get(thumb_item)].parent, layer[scroll_area]);
-					set(layer[get(thumb_item)].x, calc(i * 120 + 50));
-					layer[get(thumb_item)].loadstyle(scroll_item);
-					txtadd(thumb_pic, 'thumb_item_pic_', get(scene[get(i)].name));
-					addlayer(get(thumb_pic));
-					set(layer[get(thumb_pic)].parent, get(thumb_item));
-					set(layer[get(thumb_pic)].keep, true);
-					set(layer[get(thumb_pic)].url, get(scene[get(i)].thumburl));
-					set(layer[get(thumb_pic)].link, get(scene[get(i)].name));
-					set(layer[get(thumb_pic)].width, 100%);
-					set(layer[get(thumb_pic)].height, 100%);
-					<!-- set(layer[get(thumb_pic)].onclick, transform_scene); -->
-					txtadd(thumb_title, 'thumb_item_title_', get(scene[get(i)].name));
-					addlayer(get(thumb_title));
-					set(layer[get(thumb_title)].parent, get(thumb_item));
-					set(layer[get(thumb_title)].html, get(scene[get(i)].title));
-					layer[get(thumb_title)].loadstyle(scroll_item_title);
-					if (
-						scene[get(i)].name == $global.current_scene,
-						set(layer[get(thumb_item)].bgborder, '3 0xF6B64C');
-					);
-				);
-			);
-			set(layer[scroll_area].width, calc(scene.count * 120 - 20 + 100));
-		);
 	</action>
 
 
     <!--首次加载-->
-    <action name="init_view">
+    <action name="@global_first_scene">
     	<!--参数-->
 		if (
 			xml.view.vlookat === null,
@@ -109,9 +76,7 @@
 			@sandmap.init(get(sandmap[0].x), get(sandmap[0].y));
 			@gravity.init(get(gravity[0].x), get(gravity[0].y));
 			@vr.init(get(vr[0].x), get(vr[0].y));
-
-
-			tween(layer[tab_switch].alpha, 0.75);
+			@scenebar.init();
 
 			<!--用户可操控-->
 			set(control.usercontrol, all);
@@ -141,7 +106,7 @@
 			$global_first_scene,
 			set($global_first_scene, false);
 			wait(1);
-			init_view();,
+			@global_first_scene();,
 		);
 		
 		delayedcall(
@@ -153,12 +118,6 @@
 				$global_title_delay2,
 				3,
 				@global_hide_scene_title();
-			);
-
-			switch_tap(false);
-			for (
-				set(i, 0), i LT hotspot.count, inc(i),
-				tween(hotspot[get(i)].alpha, 1);
 			);
 		);
 	</action>
@@ -200,86 +159,6 @@
 	<action name="@global_hide_scene_title">
 		tween(layer[@global_scene_title].alpha, 0, 0.3, easeOutQuad);
 	</action>
-
-
-
-
-
-
-
-
-
-
-
-	<!--场景快捷切换-->
-	<style name="tab_box"
-		keep="true"
-		width="100%"
-		height="120"
-		x="0"
-		y="-120"
-		bgalpha="0.3"
-		align="bottom"
-		bgcolor="0x000000"
-		type="container"
-		zorder="9" />
-	<style name="scroll_area"
-		url="plugins/com/scrollarea.js"
-		keep="true"
-		direction="h"
-		width="100%"
-		height="100"
-		align="center"
-		onloaded="setcenter(0,0);" />
-	<style name="scroll_item"
-		keep="true"
-		width="100"
-		height="100"
-		bgalpha="0.8"
-		bgborder="3 0xffffff"
-		type="container"
-		align="left" />
-	<style name="scroll_item_title"
-		url="textfield.swf"
-		keep="true"
-		width="100"
-		enabled="false"
-		backgroundcolor="0x000000"
-	    backgroundalpha="0.3"
-		align="bottomcenter"
-		css="text-align:center;font-size:14px;line-height:18px;color:#fff;" />
-	<layer name="tab_box" style="tab_box">
-		<layer name="scroll_area" style="scroll_area"></layer>
-	</layer>
-
-	<style name="tab_switch"
-		url="images/switch-tab.png"
-		keep="true"
-		width="50"
-		height="50"
-		crop="0|15|100|100"
-		alpha="0"
-		x="0"
-		y="0"
-		align="centerbottom"
-		onclick="switch_tap()"
-		visible="false"
-		zorder="8" />
-	<layer name="tab_switch" style="tab_switch" />
-	<action name="switch_tap">
-		if (
-			%1 === false,
-			tween(layer[tab_switch].y, 0, 0.3, easeOutQuad);
-			tween(layer[tab_box].y, -120, 0.3, easeOutQuad);,
-			tween(layer[tab_switch].y, -50, 0.3, easeOutQuad);
-			tween(layer[tab_box].y, 0, 0.3, easeOutQuad);
-		);
-	</action>
-	<events name="tab_event" keep="true" onmousedown="switch_tap(false)" />
-
-
-	
-
 
 
 

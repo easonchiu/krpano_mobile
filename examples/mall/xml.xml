@@ -31,36 +31,36 @@
 			thumb="products/1.jpg"
 			price="4180"
 			btntext="查看详情"
-			btncolor="0x2F96DA"
-			callback="details.show(锌合金吊灯欧式卧室客厅灯玉石水晶灯, 4180, 1)" />
+			btncolor="0x2f96da"
+			callback="alert('call js');" />
 		<product name="p2"
 			title="锌合金吊灯欧式卧室客厅灯玉石水晶灯"
 			thumb="products/2.jpg"
 			price="3980"
 			btntext="查看详情"
-			btncolor="0x2F96DA"
-			callback="details.show(锌合金吊灯欧式卧室客厅灯玉石水晶灯, 3980, 3)" />
+			btncolor="0x2f96da"
+			callback="alert('call js');" />
 		<product name="p3"
 			title="新古典复古客厅转角贵妃布沙发"
 			thumb="products/3.jpg"
 			price="5999"
 			btntext="查看详情"
-			btncolor="0x2F96DA"
-			callback="details.show(新古典复古客厅转角贵妃布沙发, 5999, 2)" />
+			btncolor="0x2f96da"
+			callback="alert('call js');" />
 		<product name="p4"
 			title="新古典复古客厅转角贵妃布沙发"
 			thumb="products/4.jpg"
 			price="4180"
 			btntext="查看详情"
-			btncolor="0x2F96DA"
-			callback="details.show(新古典复古客厅转角贵妃布沙发, 4180, 4)" />
+			btncolor="0x2f96da"
+			callback="alert('call js');" />
 		<product name="p5"
 			title="新古典复古客厅转角贵妃布沙发"
 			thumb="products/5.jpg"
 			price="6280"
 			btntext="查看详情"
-			btncolor="0x2F96DA"
-			callback="details.show(新古典复古客厅转角贵妃布沙发, 6280, 5)" />
+			btncolor="0x2f96da"
+			callback="alert('call js');" />
 	</mall>
 
 	
