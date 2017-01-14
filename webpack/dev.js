@@ -29,7 +29,7 @@ var port = 8001;
 
 server.listen(port, function() {
 	// 自动打开浏览器
-	var uri = 'http://localhost:' + port + '/example/index.html';
+	var uri = 'http://localhost:' + port + '/examples/mall/index.html';
 	opn(uri);
 });
 
