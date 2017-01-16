@@ -5,13 +5,13 @@
     	set(layer[@gravity].y, %2);
     	set(layer[@gravity].visible, true);
     	tween(layer[@gravity].alpha, 1);
+    	set(plugin[@gravity_gyro].preload, true);
     </action>
 
 	<action name="@gravity_init" autorun="onstart">
 		if (
 			gravity[0].x !== null
 			AND gravity[0].x !== null,
-			layer[@gravity].changeorigin();
 			if (
 				gravity[0].enabled === false,
 
@@ -29,8 +29,8 @@
 	<!--重力感应插件-->
 	<plugin name="@gravity_gyro" devices="html5"
         url="com/gyro.js"
-        enabled="true"
-        preload="true"
+        enabled="false"
+        preload="false"
         keep="true" />
 
 	<style name="@gravity"
@@ -46,8 +46,6 @@
 		zorder="2"
 		onclick="@gravity_toggle" />
 
-	<layer name="@gravity" style="@gravity" />
-
 	<!--重力感应切换-->
 	<action name="@gravity_toggle">
 		if (
@@ -60,5 +58,7 @@
 			@toast.show('重力感应开启', 1.5);
 		);
 	</action>
+
+	<layer name="@gravity" style="@gravity" />
 
 </krpano>

@@ -4,6 +4,10 @@
 	<include url="com/webvr.xml" />
 
 	<action name="@vr.init">
+
+		addlayer(@vr);
+		layer[@vr].loadstyle(@vr);
+
     	set(layer[@vr].x, %1);
     	set(layer[@vr].y, %2);
     	set(layer[@vr].visible, true);
@@ -15,7 +19,6 @@
 			vr[0].x !== null
 			AND vr[0].x !== null,
 
-			layer[@vr].changeorigin();
 			def($gravity_is_running, boolean, true);,
 
 			removelayer(@vr);
@@ -38,6 +41,5 @@
 		zorder="2"
 		onclick="@vr_click" />
 
-	<layer name="@vr" style="@vr" />
 
 </krpano>

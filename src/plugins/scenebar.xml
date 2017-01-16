@@ -1,12 +1,13 @@
 <krpano>
 
 	<!--事件侦听-->
-	<events name="@scenebar_event" keep="true"
-		onmousedown="@scenebar_toggle(false)"
-		onnewscene="@scenebar_reset" />
+	<events name="@scenebar_event" keep="true" />
 
 
 	<action name="@scenebar.init">
+		set(events[@scenebar_event].onmousedown, '@scenebar_toggle(false)');
+		set(events[@scenebar_event].onnewscene, '@scenebar_reset');
+		
 		@scenebar_init();
 		set(layer[@scenebar_tips].visible, true);
     	tween(layer[@scenebar_tips].alpha, 0.7);

@@ -13,22 +13,37 @@
 	</action>
 
 	<action name="@mall_init">
-		stopdelayedcall($mall_init_delay);
-		delayedcall(
-			$mall_init_delay,
-			2,
-			if (
-				mall[0] !== null AND mall[0].tag !== null,
-				for (
-					set($mall_i, 0), $mall_i LT mall[0].tag.count, inc($mall_i),
-					if (
-						mall[0].tag[get($mall_i)].atscene === $global.current_scene,
-						@mall_tag_creator(mall[0].tag[get($mall_i)], $mall_i);
+		if (
+			mall[0] !== null,
+
+			stopdelayedcall($mall_init_delay);
+			delayedcall(
+				$mall_init_delay,
+				2,
+				if (
+					mall[0] !== null AND mall[0].tag !== null,
+					for (
+						set($mall_i, 0), $mall_i LT mall[0].tag.count, inc($mall_i),
+						if (
+							mall[0].tag[get($mall_i)].atscene === $global.current_scene,
+							@mall_tag_creator(mall[0].tag[get($mall_i)], $mall_i);
+						);
 					);
+					set(layer[@mall_panel].enabled, false);
 				);
-				set(layer[@mall_panel].enabled, false);
-			);
+			);,
+
+			removelayer(@mall_panel, true);
+			removelayer(@mall_panel_scroller, true);
+			
+			set(events[@mall_event].onnewscene, '');
+			set(events[@mall_event].onmousedown, '');
+			set(events[@mall_event].onautorotatestart, '');
+			set(events[@mall_event].onremovepano, '');
+			
 		);
+
+		
 	</action>
 
 	<!--清除所有所有产品-->

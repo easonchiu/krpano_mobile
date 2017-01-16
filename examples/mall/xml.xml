@@ -20,8 +20,6 @@
 		<link name="l1" atscene="shufang" ath="180" atv="0" to="keting" title="客厅" direction="left" />
 	</scenelink>
 
-	<!--mall-->
-	<include url="../../src/plugins/mall.xml" />
 	<mall>
 		<tag name="t1" atscene="keting" atv="10" ath="240" product="p2|p1" />
 		<tag name="t2" atscene="keting" atv="50" ath="90" product="p3|p4|p5" />

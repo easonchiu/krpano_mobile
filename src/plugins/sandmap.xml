@@ -1,11 +1,13 @@
 <krpano>
 
 	<events name="@sandmap_event"
-		keep="true"
-		onxmlcomplete="@sandmap_ready"
-		onviewchange="@sandmap_update" />
+		keep="true" />
 
 	<action name="@sandmap.init">
+
+		set(events[@sandmap_event].onxmlcomplete, '@sandmap_ready');
+		set(events[@sandmap_event].onviewchange, '@sandmap_update');
+
     	set(layer[@sandmap].x, %1);
     	set(layer[@sandmap].y, %2);
     	set(layer[@sandmap].visible, true);

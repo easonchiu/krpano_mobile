@@ -21,6 +21,9 @@
 	<!--场景快捷切换-->
 	<include url="plugins/scenebar.xml" />
 
+	<!--产品模块-->
+	<include url="plugins/mall.xml" />
+
     <!--自动旋转-->
     <autorotate enabled="true" waittime="5.0" speed="5.0" horizon="0.0" />
 
