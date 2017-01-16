@@ -7,7 +7,7 @@
 
 	<sound x="10" y="10" url="./sound.mp3" autoplay="false" />
 
-	<gravity x="10" y="65" />
+	<gravity x="10" y="65" enabled="true" />
 
 	<vr x="10" y="120" />
 
@@ -25,9 +25,6 @@
 		<link name="l4" atscene="shufang" ath="198" atv="22" to="keting" title="客厅" direction="left" />
 		<link name="l5" atscene="shufang" ath="200" atv="12" to="woshi" title="卧室" />
 	</scenelink>
-
-
-
 
 
 

@@ -11,10 +11,16 @@
 		if (
 			gravity[0].x !== null
 			AND gravity[0].x !== null,
-
 			layer[@gravity].changeorigin();
-			def($gravity_is_running, boolean, true);,
+			if (
+				gravity[0].enabled === false,
 
+				set(layer[@gravity].crop, '0|100|100|100');
+				set(plugin[@gravity_gyro].enabled, false);,
+
+				set(layer[@gravity].crop, '0|0|100|100');
+				set(plugin[@gravity_gyro].enabled, true);
+			);,
 			removelayer(@gravity);
 		);
 	</action>
@@ -45,15 +51,13 @@
 	<!--重力感应切换-->
 	<action name="@gravity_toggle">
 		if (
-			$gravity_is_running,
+			plugin[@gravity_gyro].enabled === true,
 			set(crop, '0|100|100|100');
 			set(plugin[@gravity_gyro].enabled, false);
-			@toast.show('重力感应关闭', 1.5);
-			def($gravity_is_running, boolean, false);,
+			@toast.show('重力感应关闭', 1.5);,
 			set(crop, '0|0|100|100');
 			set(plugin[@gravity_gyro].enabled, true);
 			@toast.show('重力感应开启', 1.5);
-			def($gravity_is_running, boolean, true);
 		);
 	</action>
 

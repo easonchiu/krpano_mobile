@@ -36,7 +36,9 @@
 			removelayer(@scenebar_tips, true);,
 			for (
 				set($scenebar_i, 0), $scenebar_i LT scene.count, inc($scenebar_i),
-				if (scene[get($scenebar_i)].thumburl !== null,
+				if (
+					scene[get($scenebar_i)].thumburl !== null
+					AND scene[get($scenebar_i)].title !== null,
 
 					<!--外框-->
 					txtadd($scenebar_item, '@scenebar_item_', get(scene[get($scenebar_i)].name));
