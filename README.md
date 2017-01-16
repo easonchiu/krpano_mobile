@@ -1,6 +1,6 @@
 # krpano移动端解决方案
 
-![example](WechatIMG1.jpg)
+![example](WechatIMG1.jpg)  
 
 
 ## 功能：
@@ -108,15 +108,15 @@
 `atscene`：在哪个场景中显示  
 `ath`：在场景中的横向角度坐标  
 `atv`：在场景中的纵向角度坐标  
-`to`：链接到的场景
+`to`：链接到的场景  
 `title`：标题名称  
-`direction`：箭头方向，方向分3种，左/右/前，分别是`left`、`right`，向前不用写即可
+`direction`：箭头方向，方向分3种，左/右/前，分别是`left`、`right`，向前不用写即可   
 
 
 ### 场景快捷切换：
-![example](WechatIMG2.jpg)
+![example](WechatIMG2.jpg)   
 该功能无配置，主要依靠在写入`<scene ...>`时有无`thumburl`和`title`这两属性决定   
-`thumburl`：缩略图
+`thumburl`：缩略图   
 `title`：标题  
 若有这两个属性并且在项目中超过2个或以上的场景，自动生成快捷切换功能  
 
